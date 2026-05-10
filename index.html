@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bingo de Elite - Mestre Supremo</title>
+    <title>Bingo de Elite V10 - Luxo 3D</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* === PALETA DE CORES LUXO VINTAGE V10 === */
         :root {
+            --gold-light: #f1d378;
             --gold: #d4af37;
             --gold-dark: #aa8a2e;
-            --velvet: #2c3e50;
-            --paper: #f3e5ab;
-            --ink: #1a1a1a;
-            --wine: #722f37;
+            --azure-velvet: #2c3e50; /* Azul meia-noite profundo */
+            --paper-aged: #f3e5ab; /* Papiro/Baunilha */
+            --black-ebony: #1a1a1a;
+            --red-wine: #722f37;
             --corn: #fbc02d;
+            --mahogany: #5d4037;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
@@ -21,14 +24,14 @@
 
         body { 
             background: #0f172a; 
-            color: var(--ink);
+            color: var(--black-ebony);
             display: flex; justify-content: center; min-height: 100vh;
             overflow: hidden;
         }
 
         #app {
             width: 100%; max-width: 500px; height: 100vh;
-            background: var(--paper);
+            background: var(--paper-aged);
             background-image: url('https://www.transparenttextures.com/patterns/shattered-island.png');
             box-shadow: 0 0 100px rgba(0,0,0,1);
             position: relative; display: flex; flex-direction: column;
@@ -36,94 +39,107 @@
             border-image: linear-gradient(to bottom, var(--gold), var(--gold-dark)) 1;
         }
 
-        .screen { display: none; flex-direction: column; padding: 20px; height: 100%; overflow-y: auto; position: relative; }
+        .screen { display: none; flex-direction: column; padding: 20px; height: 100%; overflow: hidden; position: relative; }
         .screen.active { display: flex; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* HEADER & DECORATION */
+        /* HEADER ART DECO LUXO */
         .art-deco {
             border: 3px double var(--gold-dark);
-            padding: 15px; margin-bottom: 20px;
+            padding: 10px; margin-bottom: 15px;
             text-align: center; background: rgba(0,0,0,0.03);
-            position: relative;
+            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        h1 { font-size: 28px; color: var(--wine); letter-spacing: 2px; text-transform: uppercase; }
+        h1 { font-size: 26px; color: var(--red-wine); letter-spacing: 3px; text-transform: uppercase; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
 
-        /* BUTTONS */
+        /* BOTÕES MECÂNICOS SKEUOMÓRFICOS */
         button {
-            width: 100%; padding: 16px; margin-bottom: 12px;
-            background: linear-gradient(to bottom, var(--velvet), #1a252f);
-            color: var(--gold); border: 2px solid var(--gold);
+            width: 100%; padding: 16px; margin-bottom: 10px;
+            background: linear-gradient(to bottom, var(--azure-velvet), #1a252f);
+            color: var(--gold-light); border: 2px solid var(--gold);
             font-size: 15px; font-weight: bold; text-transform: uppercase;
             cursor: pointer; transition: all 0.1s;
-            box-shadow: 0 5px 0 #15202b, 0 8px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 0 #15202b, 0 10px 20px rgba(0,0,0,0.5);
         }
-        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #15202b; }
-        .btn-gold { background: var(--gold); color: var(--velvet); border-color: var(--velvet); box-shadow: 0 5px 0 var(--gold-dark); }
-        .btn-close { background: var(--wine); color: white; border: none; padding: 10px; margin-top: 10px; }
+        button:active { transform: translateY(4px); box-shadow: 0 2px 0 #15202b; }
+        .btn-gold { background: linear-gradient(to bottom, var(--gold), var(--gold-dark)); color: var(--azure-velvet); border-color: var(--azure-velvet); box-shadow: 0 6px 0 var(--gold-dark); }
+        .btn-close { background: var(--red-wine); color: white; border: none; padding: 10px; margin-top: 10px; }
 
         input {
             width: 100%; padding: 15px; margin-bottom: 15px;
-            border: 2px solid var(--gold-dark); background: rgba(255,255,255,0.7);
-            font-size: 20px; text-align: center; color: var(--ink); font-weight: bold;
+            border: 3px solid var(--gold-dark); background: rgba(255,255,255,0.6);
+            font-size: 20px; text-align: center; color: var(--black-ebony); font-weight: bold;
         }
 
-        /* GLOBO & BALLS */
-        .globo-wrap {
-            width: 110px; height: 110px; margin: 0 auto 15px;
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+        /* GLOBO 3D ESTUPIDAMENTE REALISTA (DASHBOARD) */
+        .globo-wrap-3d {
+            width: 120px; height: 120px; margin: 0 auto 10px;
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
             border-radius: 50%; border: 4px solid var(--gold);
             display: flex; justify-content: center; align-items: center;
-            font-size: 50px; font-weight: bold; color: var(--wine);
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
+            font-size: 55px; font-weight: bold; color: var(--red-wine);
+            box-shadow: inset 0 0 25px rgba(255,255,255,0.6), 0 8px 25px rgba(0,0,0,0.4);
+            transition: transform 0.2s; /* Para feedback visual de rotação */
         }
+        .globo-wrap-3d.rotating { animation: rotateGlobo 1s linear infinite; }
+        @keyframes rotateGlobo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-        /* BINGO GRID */
-        .bingo-card-container { background: rgba(0,0,0,0.08); padding: 8px; border-radius: 4px; }
-        .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 24px; font-weight: 900; color: var(--wine); }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 8px; }
+        /* BINGO GRID (VISUAL PAPELÃO VINTAGE) */
+        .bingo-card-3d-physical { 
+            background: var(--paper-aged); 
+            padding: 10px; border-radius: 5px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 5px rgba(0,0,0,0.3);
+            border: 2px solid var(--mahogany);
+            transform: perspective(500px) rotateX(1deg); /* Efeito Skew físico */
+        }
+        .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 26px; font-weight: 900; color: var(--red-wine); border-bottom: 2px solid var(--wine); padding-bottom: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 10px; }
         .cell {
             background: #fff; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center;
-            font-size: 20px; font-weight: bold; border-radius: 2px; position: relative; cursor: pointer;
+            font-size: 22px; font-weight: bold; border-radius: 3px; position: relative; cursor: pointer;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.15), 0 2px 2px rgba(0,0,0,0.1);
         }
         .cell.marked::after {
             content: ''; position: absolute; width: 75%; height: 75%;
             background: radial-gradient(circle at 30% 30%, #ffd54f, var(--corn) 60%, #f57f17);
             border-radius: 50% 50% 45% 45%; transform: rotate(-10deg);
-            box-shadow: 1px 2px 4px rgba(0,0,0,0.4); z-index: 5;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.5); z-index: 5;
+            transition: all 0.2s;
         }
-        .cell.free { background: var(--paper); color: var(--wine); font-size: 10px; }
+        .cell.free { background: var(--paper-aged); color: var(--red-wine); font-size: 11px; }
 
-        /* RANKING */
-        .ranking-list { margin-top: 10px; }
-        .ranking-item { 
+        /* RANKING DOURADO */
+        .ranking-item-dashboard { 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px; margin-bottom: 5px; background: rgba(255,255,255,0.4);
-            border: 1px solid var(--gold-dark); border-radius: 4px; cursor: pointer;
+            padding: 12px; margin-bottom: 6px; background: rgba(255,255,255,0.4);
+            border: 2px solid var(--gold-dark); border-radius: 5px; cursor: pointer;
+            box-shadow: 0 3px 0 var(--gold-dark);
         }
-        .ranking-item:active { background: var(--gold); }
-        .ranking-item.alert { background: #fff59d; animation: pulse 1s infinite alternate; }
-        .badge-missing { background: var(--wine); color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
+        .ranking-item-dashboard:active { background: var(--gold); transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-dark); }
+        .ranking-item-dashboard.alert { background: linear-gradient(45deg, #fff9c4, #fffde7); animation: pulseAlert 0.8s infinite alternate; border-color: var(--wine); }
+        .badge-missing { background: var(--red-wine); color: white; padding: 3px 10px; border-radius: 12px; font-size: 13px; font-weight: bold; }
 
         /* AUDITOR MODAL */
         #auditor-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 20000;
+            background: rgba(0,0,0,0.9); z-index: 20000;
             display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
-        .auditor-content { background: var(--paper); padding: 20px; border: 4px solid var(--gold); width: 100%; max-width: 400px; position: relative; }
+        .auditor-content { background: var(--paper-aged); padding: 25px; border: 6px solid var(--gold); border-image: linear-gradient(to bottom, var(--gold), var(--gold-dark)) 1; width: 100%; max-width: 450px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
 
-        /* FLASHES */
+        /* FLASHES SUBLIMINARES */
         .subliminar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: none; background: white; justify-content: center; align-items: center; }
         .subliminar img { width: 80%; max-height: 80%; object-fit: contain; }
 
-        #bingo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wine); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); text-align: center; animation: flash-bg 0.2s infinite; }
-        @keyframes flash-bg { 0% { background: var(--wine); } 100% { background: var(--gold); color: var(--wine); } }
-        @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
+        /* BINGO OVERLAY CAÓTICO */
+        #bingo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wine); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); text-align: center; animation: strobe-bg 0.2s infinite; }
+        @keyframes strobe-bg { 0% { background: var(--wine); } 100% { background: var(--gold); color: var(--wine); } }
+        @keyframes pulseAlert { from { opacity: 1; transform: scale(1); } to { opacity: 0.7; transform: scale(1.02); } }
 
-        .hist-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 15px; justify-content: center; }
-        .hist-ball { width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.1); font-size: 9px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 1px solid rgba(0,0,0,0.1); }
-        .hist-ball.on { background: var(--wine); color: white; border-color: var(--gold); }
+        /* HISTÓRICO EM VELUDO */
+        .hist-velvet-table { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 15px; justify-content: center; padding: 8px; background: rgba(0,0,0,0.05); border: 1px solid var(--gold); border-radius: 3px; }
+        .hist-ball-vintage { width: 25px; height: 25px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 1px solid rgba(0,0,0,0.1); }
+        .hist-ball-vintage.on { background: var(--red-wine); color: white; border-color: var(--gold); box-shadow: inset 0 0 5px rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.4); }
     </style>
 </head>
 <body>
@@ -133,42 +149,41 @@
 
 <div id="auditor-modal">
     <div class="auditor-content">
-        <h2 style="text-align: center; color: var(--wine); margin-bottom: 10px;">Auditando: <span id="audit-id-title"></span></h2>
-        <p style="font-size: 12px; text-align: center; margin-bottom: 10px;">Números em dourado são os que já saíram no globo.</p>
-        <div class="bingo-card-container">
+        <h2 style="text-align: center; color: var(--red-wine); margin-bottom: 12px; text-transform: uppercase;">Auditando ID: <span id="audit-id-title"></span></h2>
+        <div class="bingo-card-3d-physical">
             <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
             <div class="grid" id="audit-grid"></div>
         </div>
-        <button class="btn-close" onclick="closeAuditor()">Fechar Auditoria</button>
+        <button class="btn-close btn-gold" onclick="closeAuditor()">Fechar Auditoria</button>
     </div>
 </div>
 
 <div id="app">
     
     <div id="scr-menu" class="screen active">
-        <div class="art-deco" style="margin-top: 60px;">
-            <h1>BINGO DE LUXO</h1>
-            <h2 style="font-family: serif; font-style: italic;">Asilo 1920</h2>
+        <div class="art-deco" style="margin-top: 80px;">
+            <h1>BINGO DE ELITE</h1>
+            <h2 style="font-family: serif; font-style: italic; color: var(--black-ebony);">Edição Luxo 3D</h2>
         </div>
-        <button onclick="openMestreAuth()">Aba do Mestre</button>
+        <button onclick="openMestreAuth()">Aba do Mestre Supremo</button>
         <button class="btn-gold" onclick="nav('scr-player-login')">Minha Cartela</button>
-        <button style="background:none; border:none; color:var(--ink); text-decoration:underline; font-size:12px; box-shadow:none; margin-top:20px;" onclick="nav('scr-rules')">Ver Regras</button>
+        <button style="background:none; border:none; color:var(--black-ebony); text-decoration:underline; font-size:12px; box-shadow:none; margin-top:25px;" onclick="nav('scr-rules')">Ver Regras</button>
     </div>
 
     <div id="scr-rules" class="screen">
-        <div class="art-deco"><h1>Regras do Cassino</h1></div>
-        <div style="font-size: 15px; line-height: 1.6; text-align: justify; padding: 10px; background: rgba(255,255,255,0.3);">
+        <div class="art-deco"><h1>Regras do Baile</h1></div>
+        <div style="font-size: 15px; line-height: 1.6; text-align: justify; padding: 15px; background: rgba(255,255,255,0.3); border: 1px dashed var(--gold);">
             <p><strong>1.</strong> O Mestre distribui IDs fixos. Sua cartela nunca muda.</p><br>
             <p><strong>2.</strong> Marque o milho tocando no número. Confirme para retirar.</p><br>
             <p><strong>3.</strong> O prêmio principal é <strong>CARTELA CHEIA</strong>.</p><br>
-            <p><strong>4.</strong> O Mestre monitora todas as cartelas em tempo real. Não tente fraudar!</p>
+            <p><strong>4.</strong> O Mestre monitora todas as cartelas em tempo real no dashboard 3D. Não tente fraudar!</p>
         </div>
         <button onclick="nav('scr-menu')" style="margin-top: 20px;">Voltar</button>
     </div>
 
     <div id="scr-mestre-login" class="screen">
         <div class="art-deco"><h1>Dono do Globo</h1></div>
-        <p style="text-align: center; margin-bottom: 10px;">Senha: Horário atual (HHMM)</p>
+        <p style="text-align: center; margin-bottom: 10px;">Dica: Senha é o horário atual (HHMM)</p>
         <input type="number" id="mestre-pass" placeholder="Ex: 0055">
         <button onclick="checkMestrePass()">Validar Acesso</button>
         <button onclick="nav('scr-menu')">Voltar</button>
@@ -176,27 +191,32 @@
 
     <div id="scr-mestre-setup" class="screen">
         <div class="art-deco"><h1>Nova Rodada</h1></div>
-        <p style="text-align: center;">Quantas pessoas vão jogar?</p>
+        <p style="text-align: center;">Quantos asilados vão jogar?</p>
         <input type="number" id="mestre-qtd" value="10">
         <button onclick="mestreGenerateIDs()">Gerar Novos IDs</button>
-        <div id="mestre-id-display" style="display:none; background:rgba(0,0,0,0.05); padding:15px; border:1px dashed var(--gold); margin-top:10px;">
+        <div id="mestre-id-display" style="display:none; background:rgba(0,0,0,0.05); padding:15px; border:1px dashed var(--gold); margin-top:10px; max-height: 100px; overflow-y: auto;">
             <p style="font-size:12px; font-weight:bold;">IDs PARA DISTRIBUIR:</p>
-            <h3 id="generated-ids-list" style="word-break:break-all; color:var(--wine); letter-spacing:1px; margin-top:5px;"></h3>
+            <h3 id="generated-ids-list" style="word-break:break-all; color:var(--red-wine); letter-spacing:1px; margin-top:5px; font-size: 14px;"></h3>
         </div>
-        <button id="btn-to-globo" style="display:none; margin-top:20px;" class="btn-gold" onclick="nav('scr-mestre-globo')">Abrir o Globo</button>
+        <button id="btn-to-globo" style="display:none; margin-top:20px;" class="btn-gold" onclick="nav('scr-mestre-globo')">Abrir o Globo 3D</button>
     </div>
 
-    <div id="scr-mestre-globo" class="screen">
-        <div class="globo-wrap" id="current-ball">--</div>
-        <button onclick="mestreDraw()" id="draw-btn">Sortear Bola</button>
-        
-        <div class="ranking-box">
-            <p style="font-size: 11px; font-weight: bold; text-align: center; color: var(--wine);">TOQUE NO ID PARA AUDITAR A CARTELA</p>
-            <div id="master-ranking" class="ranking-list"></div>
+    <div id="scr-mestre-globo" class="screen" style="padding: 10px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 10px; height: 100%;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="globo-wrap-3d" id="current-ball">--</div>
+                <button onclick="mestreDraw()" id="draw-btn" style="font-size: 13px; padding: 12px; margin-top: 10px;">Sortear</button>
+                <button class="btn-gold" style="font-size: 11px; padding: 8px; opacity:0.7; margin-top: 20px;" onclick="mestreReset()">Zerar</button>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; overflow: hidden;">
+                <div class="ranking-box" style="flex: 1; overflow-y: auto; background: rgba(0,0,0,0.03); padding: 5px; border: 1px solid var(--gold); border-radius: 4px;">
+                    <p style="font-size: 10px; font-weight: bold; text-align: center; color: var(--red-wine);">TOQUE NO ID PARA AUDITAR</p>
+                    <div id="master-ranking" class="ranking-list"></div>
+                </div>
+                <div class="hist-velvet-table" id="master-hist"></div>
+            </div>
         </div>
-
-        <div class="hist-grid" id="master-hist"></div>
-        <button class="btn-gold" style="margin-top:20px; font-size:11px; padding:8px; opacity:0.7;" onclick="mestreReset()">Zerar Partida</button>
     </div>
 
     <div id="scr-player-login" class="screen">
@@ -206,28 +226,30 @@
         <button onclick="nav('scr-menu')">Voltar</button>
     </div>
 
-    <div id="scr-player-game" class="screen">
-        <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--wine); margin-bottom: 10px; font-size: 14px;">
+    <div id="scr-player-game" class="screen" style="align-items: center;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--red-wine); margin-bottom: 10px; font-size: 14px; width: 100%;">
             <span>ID: <span id="display-id">---</span></span>
             <span id="display-status"></span>
         </div>
         
-        <div class="bingo-card-container">
+        <div class="bingo-card-3d-physical" style="width: 100%; max-width: 400px;">
             <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
             <div class="grid" id="player-grid"></div>
         </div>
         
-        <button class="btn-gold" style="margin-top: 30px; background: var(--wine); color: white;" onclick="shoutBingo()">GRITAR BINGO!</button>
-        <button style="background:none; border:none; box-shadow:none; color:var(--ink); font-size:10px; text-decoration:underline;" onclick="nav('scr-menu')">Voltar ao Menu</button>
+        <p style="text-align: center; font-size: 12px; margin-top: 15px; color: var(--black-ebony);">Toque para botar o milho.</p>
+        
+        <button class="btn-gold" style="margin-top: 25px; background: var(--red-wine); color: white;" onclick="shoutBingo()">GRITAR BINGO!</button>
+        <button style="background:none; border:none; box-shadow:none; color:var(--black-ebony); font-size:10px; text-decoration:underline;" onclick="nav('scr-menu')">Voltar ao Menu</button>
     </div>
 
 </div>
 
 <div id="bingo-overlay">
-    <h1 style="font-size: 70px;">BINGO!</h1>
-    <h3 id="overlay-id" style="font-size: 24px;">ID: ---</h3>
+    <h1 style="font-size: 80px;">BINGO!</h1>
+    <h3 id="overlay-id" style="font-size: 26px;">ID: ---</h3>
     <p style="margin-top: 20px; font-weight: bold;">MOSTRE O CELULAR PRO MESTRE!</p>
-    <button style="width: 180px; margin-top: 30px; background: white; color: var(--wine); border:none;" onclick="closeBingo()">Fechar</button>
+    <button style="width: 180px; margin-top: 30px; background: white; color: var(--red-wine); border:none;" onclick="closeBingo()">Fechar</button>
 </div>
 
 <script>
@@ -244,7 +266,7 @@
             let min = (i * 15) + 1;
             let max = min + 14;
             let pool = [];
-            for (let n = min; n <= max; n++) pool.push(n);
+            for (let n = min; min <= max; n++) pool.push(n);
             for (let j = 0; pool.length > 0 && j < 5; j++) {
                 let rIndex = Math.floor(seededRandom(idInt + i + j) * pool.length);
                 card[i].push(pool.splice(rIndex, 1)[0]);
@@ -259,9 +281,9 @@
         player: { id: null, marked: [] }
     };
 
-    function save() { localStorage.setItem('bingo_v8_save', JSON.stringify(state)); }
+    function save() { localStorage.setItem('bingo_v10_3d_luxo', JSON.stringify(state)); }
     function load() {
-        let saved = localStorage.getItem('bingo_v8_save');
+        let saved = localStorage.getItem('bingo_v10_3d_luxo');
         if (saved) {
             state = JSON.parse(saved);
             if (state.player.id) renderPlayerCard();
@@ -288,7 +310,7 @@
         if (input === pass) {
             state.mestre.active = true;
             nav('scr-mestre-setup');
-        } else { alert("ACESSO NEGADO. Olhe o relógio!"); }
+        } else { alert("ACESSO NEGADO."); }
     }
 
     // --- MESTRE LOGIC ---
@@ -307,49 +329,69 @@
 
     function mestreDraw() {
         if (state.mestre.drawn.length >= 75) return;
-        let n;
-        do { n = Math.floor(Math.random() * 75) + 1; } while (state.mestre.drawn.includes(n));
-        state.mestre.drawn.push(n);
-        updateMasterUI();
-        save();
+        
+        // Efeito visual de rotação do globo
+        const globoEl = document.getElementById('current-ball');
+        globoEl.classList.add('rotating');
+        document.getElementById('draw-btn').disabled = true;
+
+        setTimeout(() => {
+            let n;
+            do { n = Math.floor(Math.random() * 75) + 1; } while (state.mestre.drawn.includes(n));
+            state.mestre.drawn.push(n);
+            globoEl.classList.remove('rotating');
+            document.getElementById('draw-btn').disabled = false;
+            updateMasterUI();
+            save();
+        }, 1200); // Tempo para o efeito de rotação
     }
 
     function updateMasterUI() {
         document.getElementById('current-ball').innerText = state.mestre.drawn[state.mestre.drawn.length-1] || '--';
         
+        // Histórico Compacto
         let histHtml = '';
         for(let i=1; i<=75; i++) {
             let on = state.mestre.drawn.includes(i) ? 'on' : '';
-            histHtml += `<div class="hist-ball ${on}">${i}</div>`;
+            histHtml += `<div class="hist-ball-vintage ${on}">${i}</div>`;
         }
         document.getElementById('master-hist').innerHTML = histHtml;
 
         let rank = [];
         state.mestre.ids.forEach(id => {
             let card = generateCard(id);
-            let missing = 0;
+            let missingBingo = 0;
             card.forEach((col, c) => col.forEach((num, r) => {
                 if(c===2 && r===2) return;
-                if(!state.mestre.drawn.includes(num)) missing++;
+                if(!state.mestre.drawn.includes(num)) missingBingo++;
             }));
-            rank.push({id, missing});
+            
+            let bestLine = 5;
+            for(let i=0; i<5; i++){
+                let hMiss=0, vMiss=0;
+                for(let j=0; j<5; j++){
+                    if(!state.mestre.drawn.includes(card[j][i]) && !(j===2 && i===2)) hMiss++;
+                    if(!state.mestre.drawn.includes(card[i][j]) && !(i===2 && j===2)) vMiss++;
+                }
+                bestLine = Math.min(bestLine, hMiss, vMiss);
+            }
+            rank.push({id, missingBingo, bestLine});
         });
 
-        rank.sort((a,b) => a.missing - b.missing);
+        rank.sort((a,b) => a.missingBingo - b.missingBingo);
         let html = '';
-        rank.slice(0, 8).forEach(r => {
-            let alertCls = r.missing <= 2 ? 'alert' : '';
-            let status = r.missing === 0 ? "BINGO!" : `Faltam ${r.missing}`;
+        rank.slice(0, 10).forEach(r => {
+            let nearCls = r.missingBingo <= 2 || r.bestLine === 0 ? 'alert' : '';
+            let status = r.missingBingo === 0 ? "BINGO!" : (r.bestLine === 0 ? "LINHA!" : `F ${r.missingBingo}`);
             html += `
-                <div class="ranking-item ${alertCls}" onclick="openAuditor(${r.id})">
-                    <span>Cartela <strong>${r.id}</strong></span>
+                <div class="ranking-item-dashboard ${nearCls}" onclick="openAuditor(${r.id})">
+                    <span style="font-size:12px;">Cartela <strong>${r.id}</strong></span>
                     <span class="badge-missing">${status}</span>
                 </div>`;
         });
         document.getElementById('master-ranking').innerHTML = html;
     }
 
-    // --- VISÃO DE AUDITORIA (NOVA FEATURE) ---
     function openAuditor(id) {
         document.getElementById('audit-id-title').innerText = id;
         let card = generateCard(id);
@@ -359,14 +401,15 @@
         for(let r=0; r<5; r++){
             for(let c=0; c<5; c++){
                 let div = document.createElement('div');
-                div.className = 'cell';
+                div.className = 'cell marked free'; // Começa tudo marcado em auditoria
                 let val = card[c][r];
                 if(c===2 && r===2) { 
-                    div.innerText = 'FREE'; div.classList.add('free', 'marked'); 
+                    div.innerText = 'FREE'; div.classList.add('free'); 
                 } else {
                     div.innerText = val;
-                    // Se o número está no array de drawn do mestre, marca com milho oficial
+                    // Se o número está no array de drawn do mestre, destaca com milho oficial
                     if(state.mestre.drawn.includes(val)) div.classList.add('marked');
+                    else div.classList.remove('marked'); // Tira o milho se não saiu
                 }
                 grid.appendChild(div);
             }
@@ -409,6 +452,7 @@
                 grid.appendChild(div);
             }
         }
+        checkPlayerWinLocally();
     }
 
     function toggleCell(el, val) {
@@ -422,6 +466,12 @@
             state.player.marked.push(val);
         }
         save();
+        checkPlayerWinLocally();
+    }
+
+    function checkPlayerWinLocally() {
+        let count = state.player.marked.length;
+        document.getElementById('display-status').innerText = count >= 24 ? "CARTELA CHEIA!" : "";
     }
 
     function shoutBingo() {
