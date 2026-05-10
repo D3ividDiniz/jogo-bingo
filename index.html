@@ -3,121 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bingo de Elite V10 - Luxo 3D</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Bingo de Elite - Cassino 1920</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* === PALETA DE CORES LUXO VINTAGE V10 === */
+        /* === NOVA PALETA CASSINO CLANDESTINO === */
         :root {
-            --gold-light: #f1d378;
-            --gold: #d4af37;
-            --gold-dark: #aa8a2e;
-            --azure-velvet: #2c3e50; /* Azul meia-noite profundo */
-            --paper-aged: #f3e5ab; /* Papiro/Baunilha */
-            --black-ebony: #1a1a1a;
-            --red-wine: #722f37;
-            --corn: #fbc02d;
-            --mahogany: #5d4037;
+            --bg-dark: #11090a; /* Fundo quase preto com toque quente */
+            --wood-dark: #241114; /* Madeira mogno escura */
+            --red-casino: #8b1c31; /* Vermelho roleta/vinho */
+            --red-dark: #5c101f;
+            --brass: #b5985a; /* Dourado latão envelhecido (não amarelo) */
+            --brass-dark: #8a733f;
+            --paper: #e6daca; /* Papel pergaminho/envelhecido */
+            --ink: #1f1412; /* Tinta marrom muito escura */
+            --corn: #df9b27; /* Milho mais realista */
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
         h1, h2, h3, .bingo-header { font-family: 'Playfair Display', serif; }
 
         body { 
-            background: #0f172a; 
-            color: var(--black-ebony);
+            background: var(--bg-dark); 
+            color: var(--ink);
             display: flex; justify-content: center; min-height: 100vh;
             overflow: hidden;
+            background-image: radial-gradient(circle at center, #241114 0%, #11090a 100%);
         }
 
         #app {
             width: 100%; max-width: 500px; height: 100vh;
-            background: var(--paper-aged);
-            background-image: url('https://www.transparenttextures.com/patterns/shattered-island.png');
-            box-shadow: 0 0 100px rgba(0,0,0,1);
+            background: var(--paper);
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            box-shadow: 0 0 50px rgba(0,0,0,1);
             position: relative; display: flex; flex-direction: column;
-            border: 8px solid var(--gold);
-            border-image: linear-gradient(to bottom, var(--gold), var(--gold-dark)) 1;
+            border: 6px solid var(--brass);
+            border-image: linear-gradient(to bottom, var(--brass), var(--brass-dark)) 1;
         }
 
-        .screen { display: none; flex-direction: column; padding: 20px; height: 100%; overflow: hidden; position: relative; }
-        .screen.active { display: flex; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .screen { display: none; flex-direction: column; padding: 25px; height: 100%; overflow: hidden; position: relative; }
+        .screen.active { display: flex; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-        /* HEADER ART DECO LUXO */
-        .art-deco {
-            border: 3px double var(--gold-dark);
-            padding: 10px; margin-bottom: 15px;
-            text-align: center; background: rgba(0,0,0,0.03);
-            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        /* HEADER LUXO */
+        .header-luxo {
+            border: 2px solid var(--ink);
+            padding: 15px; margin-bottom: 25px;
+            text-align: center; background: rgba(0,0,0,0.04);
+            position: relative;
         }
-        h1 { font-size: 26px; color: var(--red-wine); letter-spacing: 3px; text-transform: uppercase; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); }
+        .header-luxo::after {
+            content: ''; position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid var(--ink); pointer-events: none;
+        }
+        h1 { font-size: 28px; color: var(--red-casino); letter-spacing: 2px; text-transform: uppercase; }
+        .subtitle { font-family: 'Playfair Display', serif; font-style: italic; color: var(--ink); font-size: 16px; margin-top: 5px; }
 
-        /* BOTÕES MECÂNICOS SKEUOMÓRFICOS */
+        /* BOTÕES CASSINO */
         button {
-            width: 100%; padding: 16px; margin-bottom: 10px;
-            background: linear-gradient(to bottom, var(--azure-velvet), #1a252f);
-            color: var(--gold-light); border: 2px solid var(--gold);
-            font-size: 15px; font-weight: bold; text-transform: uppercase;
+            width: 100%; padding: 18px; margin-bottom: 15px;
+            background: linear-gradient(to bottom, var(--red-casino), var(--red-dark));
+            color: var(--paper); border: 2px solid var(--ink);
+            font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
             cursor: pointer; transition: all 0.1s;
-            box-shadow: 0 6px 0 #15202b, 0 10px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 0 var(--ink), 0 10px 15px rgba(0,0,0,0.3);
+            border-radius: 3px;
         }
-        button:active { transform: translateY(4px); box-shadow: 0 2px 0 #15202b; }
-        .btn-gold { background: linear-gradient(to bottom, var(--gold), var(--gold-dark)); color: var(--azure-velvet); border-color: var(--azure-velvet); box-shadow: 0 6px 0 var(--gold-dark); }
-        .btn-close { background: var(--red-wine); color: white; border: none; padding: 10px; margin-top: 10px; }
+        button:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+        .btn-dark { background: linear-gradient(to bottom, var(--wood-dark), #111); color: var(--brass); }
+        .btn-outline { background: transparent; color: var(--ink); box-shadow: none; border: 1px underline var(--ink); margin-top: 10px; }
+        .btn-outline:active { transform: none; box-shadow: none; color: var(--red-casino); }
 
         input {
-            width: 100%; padding: 15px; margin-bottom: 15px;
-            border: 3px solid var(--gold-dark); background: rgba(255,255,255,0.6);
-            font-size: 20px; text-align: center; color: var(--black-ebony); font-weight: bold;
+            width: 100%; padding: 16px; margin-bottom: 20px;
+            border: 2px solid var(--ink); background: rgba(255,255,255,0.4);
+            font-size: 22px; text-align: center; color: var(--ink); font-weight: bold;
+            border-radius: 3px;
         }
+        input:focus { outline: none; border-color: var(--red-casino); background: rgba(255,255,255,0.8); }
 
-        /* GLOBO 3D ESTUPIDAMENTE REALISTA (DASHBOARD) */
+        /* GLOBO 3D REFINADO */
         .globo-wrap-3d {
-            width: 120px; height: 120px; margin: 0 auto 10px;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            border-radius: 50%; border: 4px solid var(--gold);
+            width: 110px; height: 110px; margin: 0 auto 10px;
+            background: radial-gradient(circle at 30% 30%, #fff, #e0e0e0 20%, #999 80%, #333);
+            border-radius: 50%; border: 3px solid var(--brass);
             display: flex; justify-content: center; align-items: center;
-            font-size: 55px; font-weight: bold; color: var(--red-wine);
-            box-shadow: inset 0 0 25px rgba(255,255,255,0.6), 0 8px 25px rgba(0,0,0,0.4);
-            transition: transform 0.2s; /* Para feedback visual de rotação */
+            font-size: 48px; font-weight: 900; color: var(--red-casino);
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.5), 0 10px 20px rgba(0,0,0,0.6);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            transition: transform 0.1s;
         }
-        .globo-wrap-3d.rotating { animation: rotateGlobo 1s linear infinite; }
-        @keyframes rotateGlobo { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .globo-wrap-3d.rotating { animation: shake 0.4s linear infinite; filter: blur(1px); }
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 25% { transform: translate(-1px, -2px) rotate(90deg); } 50% { transform: translate(-3px, 0px) rotate(180deg); } 75% { transform: translate(3px, 2px) rotate(270deg); } 100% { transform: translate(1px, -1px) rotate(360deg); } }
 
-        /* BINGO GRID (VISUAL PAPELÃO VINTAGE) */
+        /* BINGO GRID (VISUAL PAPELÃO) */
         .bingo-card-3d-physical { 
-            background: var(--paper-aged); 
-            padding: 10px; border-radius: 5px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 5px rgba(0,0,0,0.3);
-            border: 2px solid var(--mahogany);
-            transform: perspective(500px) rotateX(1deg); /* Efeito Skew físico */
+            background: #d9cbb3; /* Papel mais escuro para a cartela */
+            padding: 10px; border-radius: 4px; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.2);
+            border: 2px solid var(--ink);
+            transform: perspective(600px) rotateX(2deg); 
         }
-        .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 26px; font-weight: 900; color: var(--red-wine); border-bottom: 2px solid var(--wine); padding-bottom: 5px; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 10px; }
+        .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 24px; font-weight: 900; color: var(--red-casino); border-bottom: 2px solid var(--ink); padding-bottom: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 10px; }
         .cell {
-            background: #fff; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center;
-            font-size: 22px; font-weight: bold; border-radius: 3px; position: relative; cursor: pointer;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.15), 0 2px 2px rgba(0,0,0,0.1);
+            background: #fdfaf2; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; font-weight: bold; border-radius: 2px; position: relative; cursor: pointer;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .cell.marked::after {
-            content: ''; position: absolute; width: 75%; height: 75%;
-            background: radial-gradient(circle at 30% 30%, #ffd54f, var(--corn) 60%, #f57f17);
-            border-radius: 50% 50% 45% 45%; transform: rotate(-10deg);
-            box-shadow: 2px 4px 8px rgba(0,0,0,0.5); z-index: 5;
-            transition: all 0.2s;
+            content: ''; position: absolute; width: 70%; height: 70%;
+            background: radial-gradient(circle at 35% 35%, #ffeb3b, var(--corn) 60%, #c87000);
+            border-radius: 45% 55% 40% 50%; transform: rotate(-15deg);
+            box-shadow: 2px 3px 6px rgba(0,0,0,0.6); z-index: 5;
+            transition: all 0.1s;
         }
-        .cell.free { background: var(--paper-aged); color: var(--red-wine); font-size: 11px; }
+        .cell.free { background: #e8dbbc; color: var(--red-casino); font-size: 10px; }
 
-        /* RANKING DOURADO */
+        /* DASHBOARD DO MESTRE COMPACTO */
         .ranking-item-dashboard { 
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px; margin-bottom: 6px; background: rgba(255,255,255,0.4);
-            border: 2px solid var(--gold-dark); border-radius: 5px; cursor: pointer;
-            box-shadow: 0 3px 0 var(--gold-dark);
+            padding: 10px; margin-bottom: 5px; background: rgba(255,255,255,0.5);
+            border: 1px solid var(--ink); border-radius: 3px; cursor: pointer;
+            font-weight: bold; font-size: 13px;
         }
-        .ranking-item-dashboard:active { background: var(--gold); transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-dark); }
-        .ranking-item-dashboard.alert { background: linear-gradient(45deg, #fff9c4, #fffde7); animation: pulseAlert 0.8s infinite alternate; border-color: var(--wine); }
-        .badge-missing { background: var(--red-wine); color: white; padding: 3px 10px; border-radius: 12px; font-size: 13px; font-weight: bold; }
+        .ranking-item-dashboard:active { background: var(--brass); color: white; }
+        .ranking-item-dashboard.alert { background: #ffebee; border-color: var(--red-casino); color: var(--red-casino); animation: blinkAlert 1s infinite alternate; }
+        .badge-missing { background: var(--ink); color: var(--paper); padding: 3px 8px; border-radius: 12px; font-size: 11px; }
+        @keyframes blinkAlert { from { opacity: 1; } to { opacity: 0.7; } }
+
+        /* MESA DE VELUDO (HISTÓRICO) */
+        .hist-velvet-table { 
+            display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; justify-content: center; 
+            padding: 10px; background: #1b3829; /* Verde mesa de poker */
+            border: 4px solid var(--wood-dark); border-radius: 6px; 
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .hist-ball-vintage { 
+            width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.1); 
+            font-size: 9px; display: flex; justify-content: center; align-items: center; 
+            font-weight: bold; color: rgba(255,255,255,0.4); border: 1px solid rgba(0,0,0,0.3); 
+        }
+        .hist-ball-vintage.on { 
+            background: #fff; color: var(--ink); border-color: #ccc; 
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.5); 
+        }
 
         /* AUDITOR MODAL */
         #auditor-modal {
@@ -125,21 +155,21 @@
             background: rgba(0,0,0,0.9); z-index: 20000;
             display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
-        .auditor-content { background: var(--paper-aged); padding: 25px; border: 6px solid var(--gold); border-image: linear-gradient(to bottom, var(--gold), var(--gold-dark)) 1; width: 100%; max-width: 450px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.7); }
+        .auditor-content { background: var(--paper); padding: 20px; border: 4px solid var(--brass); width: 100%; max-width: 450px; }
 
         /* FLASHES SUBLIMINARES */
         .subliminar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: none; background: white; justify-content: center; align-items: center; }
         .subliminar img { width: 80%; max-height: 80%; object-fit: contain; }
 
-        /* BINGO OVERLAY CAÓTICO */
-        #bingo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wine); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); text-align: center; animation: strobe-bg 0.2s infinite; }
-        @keyframes strobe-bg { 0% { background: var(--wine); } 100% { background: var(--gold); color: var(--wine); } }
-        @keyframes pulseAlert { from { opacity: 1; transform: scale(1); } to { opacity: 0.7; transform: scale(1.02); } }
+        /* BINGO OVERLAY */
+        #bingo-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--red-casino); z-index: 10000; display: none; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            color: var(--brass); text-align: center; animation: neon-flash 0.3s infinite alternate; 
+        }
+        @keyframes neon-flash { 0% { background: var(--red-casino); color: var(--brass); } 100% { background: var(--ink); color: white; } }
 
-        /* HISTÓRICO EM VELUDO */
-        .hist-velvet-table { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 15px; justify-content: center; padding: 8px; background: rgba(0,0,0,0.05); border: 1px solid var(--gold); border-radius: 3px; }
-        .hist-ball-vintage { width: 25px; height: 25px; border-radius: 50%; background: rgba(255,255,255,0.1); font-size: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 1px solid rgba(0,0,0,0.1); }
-        .hist-ball-vintage.on { background: var(--red-wine); color: white; border-color: var(--gold); box-shadow: inset 0 0 5px rgba(255,255,255,0.3), 0 2px 4px rgba(0,0,0,0.4); }
     </style>
 </head>
 <body>
@@ -149,70 +179,70 @@
 
 <div id="auditor-modal">
     <div class="auditor-content">
-        <h2 style="text-align: center; color: var(--red-wine); margin-bottom: 12px; text-transform: uppercase;">Auditando ID: <span id="audit-id-title"></span></h2>
+        <h2 style="text-align: center; color: var(--red-casino); margin-bottom: 15px;">AUDITORIA: <span id="audit-id-title"></span></h2>
         <div class="bingo-card-3d-physical">
             <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
             <div class="grid" id="audit-grid"></div>
         </div>
-        <button class="btn-close btn-gold" onclick="closeAuditor()">Fechar Auditoria</button>
+        <button class="btn-dark" style="margin-top: 20px;" onclick="closeAuditor()">Fechar</button>
     </div>
 </div>
 
 <div id="app">
-    
     <div id="scr-menu" class="screen active">
-        <div class="art-deco" style="margin-top: 80px;">
-            <h1>BINGO DE ELITE</h1>
-            <h2 style="font-family: serif; font-style: italic; color: var(--black-ebony);">Edição Luxo 3D</h2>
+        <div class="header-luxo" style="margin-top: 60px;">
+            <h1>BINGO CLANDESTINO</h1>
+            <div class="subtitle">Asilo 1920 - Festa Exclusiva</div>
         </div>
-        <button onclick="openMestreAuth()">Aba do Mestre Supremo</button>
-        <button class="btn-gold" onclick="nav('scr-player-login')">Minha Cartela</button>
-        <button style="background:none; border:none; color:var(--black-ebony); text-decoration:underline; font-size:12px; box-shadow:none; margin-top:25px;" onclick="nav('scr-rules')">Ver Regras</button>
+        <button class="btn-dark" onclick="openMestreAuth()">Assumir o Globo (Mestre)</button>
+        <button onclick="nav('scr-player-login')">Minha Cartela</button>
+        <button class="btn-outline" onclick="nav('scr-rules')">Ler as Regras da Casa</button>
     </div>
 
     <div id="scr-rules" class="screen">
-        <div class="art-deco"><h1>Regras do Baile</h1></div>
-        <div style="font-size: 15px; line-height: 1.6; text-align: justify; padding: 15px; background: rgba(255,255,255,0.3); border: 1px dashed var(--gold);">
-            <p><strong>1.</strong> O Mestre distribui IDs fixos. Sua cartela nunca muda.</p><br>
-            <p><strong>2.</strong> Marque o milho tocando no número. Confirme para retirar.</p><br>
-            <p><strong>3.</strong> O prêmio principal é <strong>CARTELA CHEIA</strong>.</p><br>
-            <p><strong>4.</strong> O Mestre monitora todas as cartelas em tempo real no dashboard 3D. Não tente fraudar!</p>
+        <div class="header-luxo"><h1>Regras da Casa</h1></div>
+        <div style="font-size: 14px; line-height: 1.6; text-align: justify; padding: 15px; border: 1px solid var(--ink); background: rgba(255,255,255,0.4);">
+            <p><strong>1.</strong> O Mestre distribui IDs. Sua cartela é matemática e nunca muda.</p><br>
+            <p><strong>2.</strong> Marque o milho tocando no número. Um pop-up evita que você desmarque sem querer (Drunk-proof).</p><br>
+            <p><strong>3.</strong> <strong>CARTELA CHEIA</strong> leva o prêmio principal.</p><br>
+            <p><strong>4.</strong> O Mestre tem um radar de todas as cartelas. Fraude = Punição na roda.</p>
         </div>
-        <button onclick="nav('scr-menu')" style="margin-top: 20px;">Voltar</button>
+        <button class="btn-dark" onclick="nav('scr-menu')" style="margin-top: 20px;">Voltar</button>
     </div>
 
     <div id="scr-mestre-login" class="screen">
-        <div class="art-deco"><h1>Dono do Globo</h1></div>
-        <p style="text-align: center; margin-bottom: 10px;">Dica: Senha é o horário atual (HHMM)</p>
-        <input type="number" id="mestre-pass" placeholder="Ex: 0055">
-        <button onclick="checkMestrePass()">Validar Acesso</button>
-        <button onclick="nav('scr-menu')">Voltar</button>
+        <div class="header-luxo"><h1>Acesso Restrito</h1></div>
+        <p style="text-align: center; margin-bottom: 10px; font-weight: bold;">Senha: O horário exato agora (HHMM)</p>
+        <input type="number" id="mestre-pass" placeholder="Ex: 2345">
+        <button class="btn-dark" onclick="checkMestrePass()">Destrancar Globo</button>
+        <button class="btn-outline" onclick="nav('scr-menu')">Voltar</button>
     </div>
 
     <div id="scr-mestre-setup" class="screen">
-        <div class="art-deco"><h1>Nova Rodada</h1></div>
-        <p style="text-align: center;">Quantos asilados vão jogar?</p>
+        <div class="header-luxo"><h1>Novo Lote</h1></div>
+        <p style="text-align: center; font-weight: bold;">Quantos convidados vão jogar?</p>
         <input type="number" id="mestre-qtd" value="10">
-        <button onclick="mestreGenerateIDs()">Gerar Novos IDs</button>
-        <div id="mestre-id-display" style="display:none; background:rgba(0,0,0,0.05); padding:15px; border:1px dashed var(--gold); margin-top:10px; max-height: 100px; overflow-y: auto;">
-            <p style="font-size:12px; font-weight:bold;">IDs PARA DISTRIBUIR:</p>
-            <h3 id="generated-ids-list" style="word-break:break-all; color:var(--red-wine); letter-spacing:1px; margin-top:5px; font-size: 14px;"></h3>
+        <button class="btn-dark" onclick="mestreGenerateIDs()">Gerar Códigos</button>
+        
+        <div id="mestre-id-display" style="display:none; padding:15px; border:2px dashed var(--ink); margin-top:10px; max-height: 120px; overflow-y: auto;">
+            <p style="font-size:12px; font-weight:bold; color: var(--red-casino);">DITE ESTES IDs PARA A RODA:</p>
+            <h3 id="generated-ids-list" style="word-break:break-all; letter-spacing:2px; margin-top:5px; font-size: 16px;"></h3>
         </div>
-        <button id="btn-to-globo" style="display:none; margin-top:20px;" class="btn-gold" onclick="nav('scr-mestre-globo')">Abrir o Globo 3D</button>
+        <button id="btn-to-globo" style="display:none; margin-top:20px;" onclick="nav('scr-mestre-globo')">Ir para a Mesa</button>
     </div>
 
-    <div id="scr-mestre-globo" class="screen" style="padding: 10px; overflow: hidden;">
-        <div style="display: grid; grid-template-columns: 140px 1fr; gap: 10px; height: 100%;">
+    <div id="scr-mestre-globo" class="screen" style="padding: 15px;">
+        <div style="display: grid; grid-template-columns: 130px 1fr; gap: 15px; height: 100%;">
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <div class="globo-wrap-3d" id="current-ball">--</div>
-                <button onclick="mestreDraw()" id="draw-btn" style="font-size: 13px; padding: 12px; margin-top: 10px;">Sortear</button>
-                <button class="btn-gold" style="font-size: 11px; padding: 8px; opacity:0.7; margin-top: 20px;" onclick="mestreReset()">Zerar</button>
+                <button onclick="mestreDraw()" id="draw-btn" style="padding: 15px 10px; font-size: 12px; border-radius: 50px;">Sortear</button>
+                <button class="btn-dark" style="margin-top: auto; padding: 10px; font-size: 10px;" onclick="mestreReset()">Resetar</button>
             </div>
             
             <div style="display: flex; flex-direction: column; overflow: hidden;">
-                <div class="ranking-box" style="flex: 1; overflow-y: auto; background: rgba(0,0,0,0.03); padding: 5px; border: 1px solid var(--gold); border-radius: 4px;">
-                    <p style="font-size: 10px; font-weight: bold; text-align: center; color: var(--red-wine);">TOQUE NO ID PARA AUDITAR</p>
-                    <div id="master-ranking" class="ranking-list"></div>
+                <div style="flex: 1; overflow-y: auto; background: rgba(255,255,255,0.3); padding: 5px; border: 1px solid var(--ink); border-radius: 4px; margin-bottom: 10px;">
+                    <p style="font-size: 10px; font-weight: bold; text-align: center; color: var(--red-casino); margin-bottom: 5px;">TOQUE NUM ID PARA AUDITAR</p>
+                    <div id="master-ranking"></div>
                 </div>
                 <div class="hist-velvet-table" id="master-hist"></div>
             </div>
@@ -220,15 +250,16 @@
     </div>
 
     <div id="scr-player-login" class="screen">
-        <div class="art-deco"><h1>Sua Cartela</h1></div>
-        <input type="number" id="player-id-input" placeholder="Digite seu ID">
-        <button class="btn-gold" onclick="playerStart()">Entrar no Jogo</button>
-        <button onclick="nav('scr-menu')">Voltar</button>
+        <div class="header-luxo"><h1>Sua Cartela</h1></div>
+        <p style="text-align: center; margin-bottom: 10px; font-weight: bold;">Digite o código fornecido pelo Mestre</p>
+        <input type="number" id="player-id-input" placeholder="ID (ex: 482)">
+        <button onclick="playerStart()">Sentar na Mesa</button>
+        <button class="btn-outline" onclick="nav('scr-menu')">Voltar</button>
     </div>
 
     <div id="scr-player-game" class="screen" style="align-items: center;">
-        <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--red-wine); margin-bottom: 10px; font-size: 14px; width: 100%;">
-            <span>ID: <span id="display-id">---</span></span>
+        <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--ink); margin-bottom: 15px; font-size: 16px; width: 100%; max-width: 400px;">
+            <span>ID: <span id="display-id" style="color: var(--red-casino);">---</span></span>
             <span id="display-status"></span>
         </div>
         
@@ -237,23 +268,23 @@
             <div class="grid" id="player-grid"></div>
         </div>
         
-        <p style="text-align: center; font-size: 12px; margin-top: 15px; color: var(--black-ebony);">Toque para botar o milho.</p>
+        <p style="text-align: center; font-size: 12px; margin-top: 15px; color: var(--ink);">Toque para carimbar o milho.</p>
         
-        <button class="btn-gold" style="margin-top: 25px; background: var(--red-wine); color: white;" onclick="shoutBingo()">GRITAR BINGO!</button>
-        <button style="background:none; border:none; box-shadow:none; color:var(--black-ebony); font-size:10px; text-decoration:underline;" onclick="nav('scr-menu')">Voltar ao Menu</button>
+        <button style="margin-top: auto; padding: 20px; font-size: 20px;" onclick="shoutBingo()">GRITAR BINGO!</button>
+        <button class="btn-outline" style="padding: 10px; margin-top: 5px; font-size: 10px;" onclick="nav('scr-menu')">Sair (Salva automático)</button>
     </div>
 
 </div>
 
 <div id="bingo-overlay">
-    <h1 style="font-size: 80px;">BINGO!</h1>
-    <h3 id="overlay-id" style="font-size: 26px;">ID: ---</h3>
-    <p style="margin-top: 20px; font-weight: bold;">MOSTRE O CELULAR PRO MESTRE!</p>
-    <button style="width: 180px; margin-top: 30px; background: white; color: var(--red-wine); border:none;" onclick="closeBingo()">Fechar</button>
+    <h1 style="font-size: 80px; color: white; text-shadow: 0 0 20px var(--brass);">BINGO!</h1>
+    <h3 id="overlay-id" style="font-size: 30px; margin-top: 10px;">ID: ---</h3>
+    <p style="margin-top: 30px; font-size: 18px; font-weight: bold; letter-spacing: 2px;">LEVANTE O CELULAR PRO MESTRE!</p>
+    <button class="btn-dark" style="width: 200px; margin-top: 40px;" onclick="closeBingo()">Fechar</button>
 </div>
 
 <script>
-    // --- LÓGICA DE GERAÇÃO (SEED) ---
+    // --- LÓGICA DE GERAÇÃO (SEED FIXO CORRIGIDO) ---
     function seededRandom(seed) {
         var x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
@@ -266,7 +297,9 @@
             let min = (i * 15) + 1;
             let max = min + 14;
             let pool = [];
-            for (let n = min; min <= max; n++) pool.push(n);
+            // CORREÇÃO DO LOOP INFINITO (n <= max em vez de min <= max)
+            for (let n = min; n <= max; n++) { pool.push(n); }
+            
             for (let j = 0; pool.length > 0 && j < 5; j++) {
                 let rIndex = Math.floor(seededRandom(idInt + i + j) * pool.length);
                 card[i].push(pool.splice(rIndex, 1)[0]);
@@ -275,15 +308,15 @@
         return card;
     }
 
-    // --- ESTADO ---
+    // --- ESTADO & PERSISTÊNCIA ---
     let state = {
         mestre: { active: false, drawn: [], ids: [] },
         player: { id: null, marked: [] }
     };
 
-    function save() { localStorage.setItem('bingo_v10_3d_luxo', JSON.stringify(state)); }
+    function save() { localStorage.setItem('bingo_elite_red_v11', JSON.stringify(state)); }
     function load() {
-        let saved = localStorage.getItem('bingo_v10_3d_luxo');
+        let saved = localStorage.getItem('bingo_elite_red_v11');
         if (saved) {
             state = JSON.parse(saved);
             if (state.player.id) renderPlayerCard();
@@ -297,7 +330,11 @@
         save();
     }
 
-    // --- MESTRE LOGIN ---
+    function vibrate() {
+        try { if(navigator.vibrate) navigator.vibrate(50); } catch(e){}
+    }
+
+    // --- MESTRE ---
     function openMestreAuth() {
         if (state.mestre.active) nav('scr-mestre-setup');
         else nav('scr-mestre-login');
@@ -310,10 +347,9 @@
         if (input === pass) {
             state.mestre.active = true;
             nav('scr-mestre-setup');
-        } else { alert("ACESSO NEGADO."); }
+        } else { alert("Acesso Negado. Olhe a hora exata no seu relógio."); }
     }
 
-    // --- MESTRE LOGIC ---
     function mestreGenerateIDs() {
         let qtd = parseInt(document.getElementById('mestre-qtd').value) || 10;
         state.mestre.ids = [];
@@ -330,7 +366,6 @@
     function mestreDraw() {
         if (state.mestre.drawn.length >= 75) return;
         
-        // Efeito visual de rotação do globo
         const globoEl = document.getElementById('current-ball');
         globoEl.classList.add('rotating');
         document.getElementById('draw-btn').disabled = true;
@@ -343,13 +378,13 @@
             document.getElementById('draw-btn').disabled = false;
             updateMasterUI();
             save();
-        }, 1200); // Tempo para o efeito de rotação
+            vibrate();
+        }, 1000);
     }
 
     function updateMasterUI() {
         document.getElementById('current-ball').innerText = state.mestre.drawn[state.mestre.drawn.length-1] || '--';
         
-        // Histórico Compacto
         let histHtml = '';
         for(let i=1; i<=75; i++) {
             let on = state.mestre.drawn.includes(i) ? 'on' : '';
@@ -380,12 +415,12 @@
 
         rank.sort((a,b) => a.missingBingo - b.missingBingo);
         let html = '';
-        rank.slice(0, 10).forEach(r => {
-            let nearCls = r.missingBingo <= 2 || r.bestLine === 0 ? 'alert' : '';
-            let status = r.missingBingo === 0 ? "BINGO!" : (r.bestLine === 0 ? "LINHA!" : `F ${r.missingBingo}`);
+        rank.slice(0, 15).forEach(r => {
+            let alertCls = r.missingBingo <= 2 || r.bestLine === 0 ? 'alert' : '';
+            let status = r.missingBingo === 0 ? "BINGO" : (r.bestLine === 0 ? "LINHA" : `Falta ${r.missingBingo}`);
             html += `
-                <div class="ranking-item-dashboard ${nearCls}" onclick="openAuditor(${r.id})">
-                    <span style="font-size:12px;">Cartela <strong>${r.id}</strong></span>
+                <div class="ranking-item-dashboard ${alertCls}" onclick="openAuditor(${r.id})">
+                    <span>ID: <strong>${r.id}</strong></span>
                     <span class="badge-missing">${status}</span>
                 </div>`;
         });
@@ -401,15 +436,14 @@
         for(let r=0; r<5; r++){
             for(let c=0; c<5; c++){
                 let div = document.createElement('div');
-                div.className = 'cell marked free'; // Começa tudo marcado em auditoria
+                div.className = 'cell free marked'; 
                 let val = card[c][r];
                 if(c===2 && r===2) { 
-                    div.innerText = 'FREE'; div.classList.add('free'); 
+                    div.innerText = 'FREE'; 
                 } else {
                     div.innerText = val;
-                    // Se o número está no array de drawn do mestre, destaca com milho oficial
                     if(state.mestre.drawn.includes(val)) div.classList.add('marked');
-                    else div.classList.remove('marked'); // Tira o milho se não saiu
+                    else div.classList.remove('marked'); 
                 }
                 grid.appendChild(div);
             }
@@ -417,13 +451,10 @@
         document.getElementById('auditor-modal').style.display = 'flex';
     }
 
-    function closeAuditor() {
-        document.getElementById('auditor-modal').style.display = 'none';
-    }
+    function closeAuditor() { document.getElementById('auditor-modal').style.display = 'none'; }
+    function mestreReset() { if(confirm("Deseja zerar a mesa?")) { state.mestre.drawn = []; updateMasterUI(); save(); } }
 
-    function mestreReset() { if(confirm("Deseja zerar o globo?")) { state.mestre.drawn = []; updateMasterUI(); save(); } }
-
-    // --- JOGADOR LOGIC ---
+    // --- JOGADOR ---
     function playerStart() {
         let id = document.getElementById('player-id-input').value;
         if(id.length < 3) return alert("ID inválido");
@@ -457,13 +488,14 @@
 
     function toggleCell(el, val) {
         if(el.classList.contains('marked')) {
-            if(confirm("Deseja remover o milho deste número?")) {
+            if(confirm("Remover este milho?")) {
                 el.classList.remove('marked');
                 state.player.marked = state.player.marked.filter(m => m !== val);
             }
         } else {
             el.classList.add('marked');
             state.player.marked.push(val);
+            vibrate();
         }
         save();
         checkPlayerWinLocally();
@@ -477,21 +509,19 @@
     function shoutBingo() {
         document.getElementById('overlay-id').innerText = "ID: " + state.player.id;
         document.getElementById('bingo-overlay').style.display = 'flex';
+        try { if(navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 300]); } catch(e){}
     }
     function closeBingo() { document.getElementById('bingo-overlay').style.display = 'none'; }
 
-    // --- FLASHES JEQUITI ---
-    function startFlashes() {
-        setTimeout(triggerFlash, 60000); // 1 minuto
-    }
-
+    // --- FLASHES SUBLIMINARES ---
+    function startFlashes() { setTimeout(triggerFlash, 60000); }
     function triggerFlash() {
         const type = Math.random() > 0.5 ? 'flash-jequiti' : 'flash-telesena';
         const el = document.getElementById(type);
         el.style.display = 'flex';
         setTimeout(() => {
             el.style.display = 'none';
-            let next = Math.floor(Math.random() * (600000 - 60000) + 60000); // 1-10 min
+            let next = Math.floor(Math.random() * (600000 - 60000) + 60000);
             setTimeout(triggerFlash, next);
         }, 150);
     }
