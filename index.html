@@ -3,432 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bingo da Vó - Festa 19 & 20</title>
+    <title>Bingo do Asilo - Festa 19 & 20</title>
     <style>
-        /* === TEMA E VARIÁVEIS === */
         :root {
-            --red-cloth: #c62828;
-            --white-cloth: #f5f5f5;
-            --paper: #fff9c4;
-            --ink: #37474f;
+            --vintage-paper: #e8d5b5;
+            --ink: #2c1a1a;
+            --gold: #d4af37;
+            --red-stamp: #a32a2a;
+            --wood: #3e2723;
             --corn: #fbc02d;
-            --wood: #5d4037;
-            --wood-dark: #3e2723;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: 'Courier New', Courier, monospace; }
-        input { user-select: auto; }
-
-        body {
-            background-color: var(--white-cloth);
-            /* Estampa de toalha de mesa xadrez */
-            background-image: 
-                linear-gradient(45deg, rgba(198, 40, 40, 0.1) 25%, transparent 25%, transparent 75%, rgba(198, 40, 40, 0.1) 75%, rgba(198, 40, 40, 0.1)),
-                linear-gradient(45deg, rgba(198, 40, 40, 0.1) 25%, transparent 25%, transparent 75%, rgba(198, 40, 40, 0.1) 75%, rgba(198, 40, 40, 0.1));
-            background-size: 40px 40px;
-            background-position: 0 0, 20px 20px;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Georgia', serif; user-select: none; }
+        body { 
+            background: var(--wood); 
             color: var(--ink);
-            display: flex; justify-content: center; min-height: 100vh; overflow-x: hidden;
+            display: flex; justify-content: center; min-height: 100vh;
         }
 
         #app {
             width: 100%; max-width: 500px; min-height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 20px rgba(0,0,0,0.2);
-            display: flex; flex-direction: column; position: relative;
+            background: var(--vintage-paper);
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            position: relative; display: flex; flex-direction: column;
+            border-left: 8px solid var(--wood); border-right: 8px solid var(--wood);
         }
 
-        .screen { display: none; flex-direction: column; padding: 20px; height: 100%; overflow-y: auto; padding-bottom: 80px; }
-        .screen.active { display: flex; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .screen { display: none; flex-direction: column; padding: 20px; height: 100vh; overflow-y: auto; }
+        .screen.active { display: flex; }
 
-        /* === ELEMENTOS VISUAIS === */
-        h1, h2, h3 { text-align: center; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
-        .title { font-size: 36px; color: var(--red-cloth); text-shadow: 2px 2px 0px rgba(0,0,0,0.1); border-bottom: 3px dashed var(--red-cloth); padding-bottom: 10px; }
-        
-        .box { background: #fff; border: 2px solid var(--wood); padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 3px 3px 0 var(--wood); }
-        .box-title { color: var(--wood); border-bottom: 1px solid var(--wood); padding-bottom: 5px; margin-bottom: 10px; font-size: 18px; }
+        h1, h2 { text-transform: uppercase; text-align: center; color: var(--red-stamp); letter-spacing: 2px; }
+        .decoration { border: 2px solid var(--ink); padding: 10px; margin-bottom: 20px; position: relative; }
+        .decoration::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid var(--ink); }
 
-        input { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; text-align: center; border: 2px solid var(--wood); border-radius: 8px; margin-bottom: 15px; outline: none; background: var(--paper); }
-        input:focus { border-color: var(--red-cloth); }
+        /* INPUTS E BOTÕES VINTAGE */
+        input { 
+            width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid var(--ink); 
+            background: rgba(255,255,255,0.3); font-size: 20px; font-weight: bold; text-align: center;
+        }
+        button { 
+            width: 100%; padding: 15px; border: 2px solid var(--ink); background: var(--red-stamp);
+            color: white; font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+            box-shadow: 4px 4px 0 var(--ink); margin-bottom: 12px;
+        }
+        button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+        .btn-secondary { background: var(--ink); }
+        .btn-rules { background: #5d4037; }
 
-        button { width: 100%; padding: 15px; font-size: 18px; font-weight: bold; text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer; margin-bottom: 10px; color: #fff; box-shadow: 0 4px 0 rgba(0,0,0,0.3); transition: transform 0.1s; }
-        button:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.3); }
-        .btn-red { background: var(--red-cloth); }
-        .btn-wood { background: var(--wood); }
-        .btn-green { background: #2e7d32; }
-
-        /* === MESTRE: GLOBO E RANKING === */
-        .globo-display { background: var(--paper); border: 4px solid var(--wood-dark); border-radius: 50%; width: 120px; height: 120px; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; font-size: 60px; font-weight: bold; color: var(--red-cloth); box-shadow: inset 0 0 15px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.2); }
-        .id-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-        .id-badge { background: var(--wood); color: #fff; padding: 5px 10px; border-radius: 4px; font-weight: bold; letter-spacing: 1px; }
-        
-        .ranking-item { display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px dashed #ccc; font-weight: bold; font-size: 14px; }
-        .ranking-item.alert { background: #ffebee; color: var(--red-cloth); font-size: 16px; border: 2px solid var(--red-cloth); border-radius: 4px; }
-
-        .historico-grid { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-        .hist-num { width: 30px; height: 30px; border-radius: 50%; background: #eee; display: flex; justify-content: center; align-items: center; font-size: 12px; font-weight: bold; color: #aaa; }
-        .hist-num.drawn { background: var(--red-cloth); color: #fff; }
-
-        /* === JOGADOR: CARTELA === */
-        .cartela-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 24px; font-weight: bold; color: var(--red-cloth); margin-bottom: 5px; }
-        .cartela-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: var(--wood-dark); padding: 4px; border-radius: 8px; box-shadow: 3px 3px 0 rgba(0,0,0,0.3); }
-        
-        .cell { background: var(--paper); aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: bold; border-radius: 4px; cursor: pointer; position: relative; color: var(--ink); }
-        .cell.livre { font-size: 12px; color: var(--red-cloth); background: #ffecb3; cursor: default; }
-        
-        /* Grão de Milho (Marcador) */
+        /* CARTELA */
+        .bingo-grid { 
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; 
+            background: var(--ink); padding: 5px; border-radius: 4px;
+        }
+        .bingo-header { 
+            display: grid; grid-template-columns: repeat(5, 1fr); 
+            text-align: center; font-size: 30px; font-weight: 900; color: var(--red-stamp);
+        }
+        .cell { 
+            background: #fff; aspect-ratio: 1/1; display: flex; justify-content: center; 
+            align-items: center; font-size: 22px; font-weight: bold; position: relative;
+        }
         .cell.marked::after {
-            content: ''; position: absolute; width: 60%; height: 60%;
+            content: ''; position: absolute; width: 70%; height: 70%;
             background: radial-gradient(circle at 30% 30%, #fff59d, var(--corn) 60%, #f57f17);
-            border-radius: 50% 50% 40% 40%; box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
-            transform: rotate(-15deg);
+            border-radius: 50% 50% 40% 40%; transform: rotate(-15deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.4); z-index: 2;
         }
+        .cell.free { font-size: 10px; color: var(--red-stamp); background: #fdf5e6; }
 
-        .bingo-btn-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; z-index: 50; }
-        .btn-bingo-scream { background: linear-gradient(45deg, #ffd600, #ff6d00); color: #b71c1c; font-size: 24px; text-shadow: 1px 1px 0 #fff; border: 4px solid #b71c1c; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        /* MESTRE */
+        .globo { 
+            width: 100px; height: 100px; background: var(--red-stamp); border-radius: 50%;
+            margin: 0 auto 20px; display: flex; justify-content: center; align-items: center;
+            font-size: 45px; color: white; border: 5px double var(--gold);
+        }
+        .ranking-box { background: rgba(0,0,0,0.05); padding: 10px; border: 1px dashed var(--ink); margin-top: 15px; }
+        .ranking-item { display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; padding: 5px 0; font-size: 14px; }
+        .ranking-item.winner { background: #fff59d; font-weight: bold; color: var(--red-stamp); border: 1px solid var(--red-stamp); padding: 5px; }
 
-        /* === POP-UP BINGO === */
-        #popup-bingo { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; flex-direction: column; text-align: center; }
-        #popup-bingo.active { display: flex; animation: strobe 0.5s infinite alternate; }
-        .popup-text { font-family: 'Impact', fantasy; font-size: 80px; color: var(--corn); text-shadow: 0 0 20px #fff, 0 0 40px var(--red-cloth); margin-bottom: 20px; transform: rotate(-5deg); }
-        @keyframes strobe { 0% { background: rgba(198, 40, 40, 0.9); } 100% { background: rgba(0, 0, 0, 0.9); } }
+        /* POPUP BINGO */
+        #bingo-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(163, 42, 42, 0.95); z-index: 1000; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+        }
+        .strobe { animation: strobe 0.4s infinite; }
+        @keyframes strobe { from { opacity: 1; } to { opacity: 0.7; } }
 
+        .hist-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; justify-content: center; }
+        .hist-ball { width: 25px; height: 25px; border-radius: 50%; background: #ccc; font-size: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        .hist-ball.on { background: var(--red-stamp); color: white; }
+
+        .rules-content { font-size: 16px; line-height: 1.5; text-align: justify; }
+        .rules-content li { margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    
-    <div id="screen-menu" class="screen active">
-        <h1 class="title" style="margin-top: 30px;">BINGO<br><span style="font-size: 20px; color: var(--ink);">DA VÓ</span></h1>
-        <div class="box" style="text-align: center; font-size: 14px; margin-bottom: 40px;">
-            A festa tá pronta! Pegue sua cartela ou assuma o globo.
+    <div id="scr-menu" class="screen active">
+        <div class="decoration" style="margin-top: 50px;">
+            <h1>BINGO<br><span style="font-size: 18px; color: var(--ink)">DO ASILO</span></h1>
         </div>
-        <button class="btn-wood" onclick="nav('mestre-setup')">Sou o Cantador (Mestre)</button>
-        <button class="btn-red" onclick="nav('jogador-setup')">Vou Jogar (Cartela)</button>
-    </div>
-
-    <div id="screen-mestre-setup" class="screen">
-        <h1 class="title">Criar Sala</h1>
-        <div class="box">
-            <h2 class="box-title">Horário / Código da Sala</h2>
-            <input type="text" id="m-room" placeholder="Ex: 2000">
-            <h2 class="box-title">Qtd. Jogadores (Máx 30)</h2>
-            <input type="number" id="m-qtd" value="10" min="1" max="30">
-        </div>
-        <button class="btn-green" onclick="generateRoom()">Gerar Cartelas</button>
-        <button class="btn-wood" onclick="nav('menu')">Voltar</button>
-
-        <div id="m-id-list-container" class="box" style="display: none; margin-top: 15px;">
-            <h2 class="box-title">Distribua esses IDs:</h2>
-            <div class="id-list" id="m-id-list"></div>
-            <p style="font-size: 12px; margin-top: 10px; text-align: center; color: #666;">O número de cima é o Código da Sala. Cada jogador usa um ID diferente.</p>
-            <button class="btn-red" style="margin-top: 15px;" onclick="startMestreGame()">Ir para o Globo!</button>
-        </div>
-    </div>
-
-    <div id="screen-mestre-game" class="screen">
-        <h1 class="title" style="font-size: 24px;">Painel do Mestre</h1>
+        <p style="text-align: center; margin-bottom: 30px;">Festa 19 & 20 - Edição Limitada</p>
         
-        <div class="globo-display" id="m-current-ball">--</div>
-        <button class="btn-red" onclick="drawNumber()" style="font-size: 22px; padding: 20px;" id="btn-draw">Sortear Bola</button>
-
-        <div class="box">
-            <h2 class="box-title">Ranking (Anti-Roubo)</h2>
-            <div id="m-ranking-list">
-                <p style="text-align: center; font-size: 14px; color: #777;">Sorteie os números para ver quem está ganhando.</p>
-            </div>
-        </div>
-
-        <div class="box">
-            <h2 class="box-title">Pedras Cantadas (<span id="m-drawn-count">0</span>)</h2>
-            <div class="historico-grid" id="m-hist-grid"></div>
-        </div>
-
-        <button class="btn-wood" onclick="resetMestre()">Encerrar Partida</button>
+        <button onclick="openMestreAuth()">Aba do Mestre</button>
+        <button class="btn-secondary" onclick="nav('scr-player-login')">Minha Cartela</button>
+        <button class="btn-rules" onclick="nav('scr-rules')">Regras do Jogo</button>
     </div>
 
-    <div id="screen-jogador-setup" class="screen">
-        <h1 class="title">Sua Cartela</h1>
-        <div class="box">
-            <h2 class="box-title">Código da Sala</h2>
-            <input type="text" id="j-room" placeholder="Ex: 2000">
-            <h2 class="box-title">Seu ID (3 dígitos)</h2>
-            <input type="number" id="j-id" placeholder="Ex: 482">
+    <div id="scr-rules" class="screen">
+        <h1>Regras</h1>
+        <div class="rules-content">
+            <ul>
+                <li><strong>1. Início:</strong> O Mestre gera os IDs e distribui para os convidados. Cada ID gera uma cartela única e fixa.</li>
+                <li><strong>2. Marcação:</strong> Toque no número para colocar um grão de milho. Para remover, toque novamente e confirme.</li>
+                <li><strong>3. Linha:</strong> Se completar uma linha horizontal, vertical ou diagonal (5 números), você bateu <strong>LINHA</strong>. Grite para ganhar o prêmio de consolação!</li>
+                <li><strong>4. Bingo:</strong> Se completar a <strong>CARTELA TODA</strong> (24 números + livre), grite <strong>BINGO</strong> e mostre o celular piscando para o Mestre.</li>
+                <li><strong>5. Fraude:</strong> O Mestre tem um radar de todas as cartelas. Se gritar falso, a punição é um shot de bebida barata.</li>
+            </ul>
         </div>
-        <button class="btn-green" onclick="generateJogadorCard()">Pegar Cartela</button>
-        <button class="btn-wood" onclick="nav('menu')">Voltar</button>
+        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
     </div>
 
-    <div id="screen-jogador-game" class="screen" style="align-items: center;">
-        <div style="width: 100%; display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; font-size: 14px;">
-            <span>Sala: <span id="j-info-room" style="color: var(--red-cloth);"></span></span>
-            <span>ID: <span id="j-info-id" style="color: var(--red-cloth);"></span></span>
-        </div>
-
-        <div style="width: 100%; max-width: 400px;">
-            <div class="cartela-header">
-                <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
-            </div>
-            <div class="cartela-grid" id="j-cartela-grid">
-                </div>
-            <p style="text-align: center; font-size: 12px; margin-top: 15px; color: #666;">Toque para botar o milho.</p>
-        </div>
-
-        <div class="bingo-btn-container">
-            <button class="btn-bingo-scream" onclick="screamBingo()">GRITAR BINGO!</button>
-        </div>
+    <div id="scr-mestre-login" class="screen">
+        <h1>Acesso Mestre</h1>
+        <p style="text-align: center; margin-bottom: 15px;">Digite o horário atual para entrar:</p>
+        <input type="number" id="mestre-pass" placeholder="Ex: 0042">
+        <button onclick="checkMestrePass()">Entrar no Globo</button>
+        <button class="btn-secondary" onclick="nav('scr-menu')">Cancelar</button>
     </div>
 
+    <div id="scr-mestre-setup" class="screen">
+        <h1>Configurar Rodada</h1>
+        <div class="ranking-box">
+            <p>Qtd. de Jogadores:</p>
+            <input type="number" id="mestre-qtd" value="10" min="1" max="30">
+        </div>
+        <button onclick="mestreGenerateIDs()">Gerar IDs da Rodada</button>
+        <div id="mestre-id-display" class="ranking-box" style="display: none; word-break: break-all;">
+            <p>IDs gerados (Diga aos jogadores):</p>
+            <h3 id="generated-ids-list" style="color: var(--wood); margin-top: 10px;"></h3>
+        </div>
+        <button id="btn-to-globo" style="display: none;" onclick="nav('scr-mestre-globo')">Ir para o Globo</button>
+        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
+    </div>
+
+    <div id="scr-mestre-globo" class="screen">
+        <div class="globo" id="current-ball">--</div>
+        <button onclick="mestreDraw()">Sortear Próxima</button>
+        
+        <div class="ranking-box">
+            <p>Monitor Anti-Fraude:</p>
+            <div id="master-ranking"></div>
+        </div>
+
+        <div class="hist-grid" id="master-hist"></div>
+        <button class="btn-secondary" style="margin-top: 20px;" onclick="mestreReset()">Zerar Partida</button>
+    </div>
+
+    <div id="scr-player-login" class="screen">
+        <h1>Sua Cartela</h1>
+        <p style="text-align: center; margin-bottom: 10px;">Digite o ID fornecido pelo Mestre:</p>
+        <input type="number" id="player-id-input" placeholder="Ex: 482">
+        <button onclick="playerStart()">Entrar no Jogo</button>
+        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
+    </div>
+
+    <div id="scr-player-game" class="screen">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;">
+            <span>ID: <span id="display-id">---</span></span>
+            <span id="display-win-status" style="color: var(--red-stamp)"></span>
+        </div>
+        
+        <div class="bingo-header">
+            <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
+        </div>
+        <div class="bingo-grid" id="player-grid"></div>
+        
+        <button id="btn-shout-bingo" class="btn-secondary" style="margin-top: 25px; background: var(--red-stamp);" onclick="shoutBingo()">BINGO!</button>
+        <button class="btn-secondary" style="margin-top: 5px; opacity: 0.6; font-size: 12px;" onclick="playerExit()">Sair da Cartela</button>
+    </div>
 </div>
 
-<div id="popup-bingo">
-    <div class="popup-text">BINGO!!!</div>
-    <p style="color: #fff; font-size: 18px; font-weight: bold; margin-bottom: 30px;">Mostre o celular pro Mestre!</p>
-    <button class="btn-wood" style="width: 80%; max-width: 300px;" onclick="closePopup()">Fechar</button>
+<div id="bingo-overlay" class="strobe">
+    <h1 style="color: white; font-size: 80px; transform: rotate(-5deg);">BINGO!</h1>
+    <h2 id="overlay-id" style="color: var(--gold); font-size: 30px;">ID: ---</h2>
+    <p style="color: white; margin: 30px;">Mostre para o Mestre agora!</p>
+    <button style="width: 200px; background: white; color: var(--red-stamp);" onclick="closeBingo()">Continuar</button>
 </div>
 
 <script>
-    // ==========================================
-    // LÓGICA DE GERAÇÃO DETERMINÍSTICA (SEED)
-    // ==========================================
-    // Essa matemática garante que "Sala 2000 + ID 123" sempre gere a MESMA cartela,
-    // sem precisar de banco de dados ou internet.
-    
-    function xmur3(str) {
-        for(var i = 0, h = 1779033703 ^ str.length; i < str.length; i++) {
-            h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
-            h = h << 13 | h >>> 19;
-        }
-        return function() {
-            h = Math.imul(h ^ (h >>> 16), 2246822507);
-            h = Math.imul(h ^ (h >>> 13), 3266489909);
-            return (h ^= h >>> 16) >>> 0;
-        }
-    }
-    
-    function sfc32(a, b, c, d) {
-        return function() {
-          a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0;
-          var t = (a + b) | 0;
-          a = b ^ b >>> 9; b = c + (c << 3) | 0; c = (c << 21 | c >>> 11);
-          d = d + 1 | 0; t = t + d | 0; c = c + t | 0;
-          return (t >>> 0) / 4294967296;
-        }
+    // --- LÓGICA DE CARTELA FIXA (SEED) ---
+    function seededRandom(seed) {
+        var x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
     }
 
-    function getNRandom(min, max, n, randFn) {
-        let arr = [];
-        for(let i=min; i<=max; i++) arr.push(i);
-        // Fisher-Yates shuffle com seeded random
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(randFn() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
+    function generateCard(id) {
+        let card = [[],[],[],[],[]];
+        let idInt = parseInt(id);
+        for (let i = 0; i < 5; i++) {
+            let min = (i * 15) + 1;
+            let max = min + 14;
+            let pool = [];
+            for (let n = min; min <= max; min++) pool.push(min);
+            
+            // Shuffle pool using ID as seed
+            for (let j = 0; pool.length > 0 && j < 5; j++) {
+                let rIndex = Math.floor(seededRandom(idInt + i + j) * pool.length);
+                card[i].push(pool.splice(rIndex, 1)[0]);
+            }
         }
-        return arr.slice(0, n);
+        return card;
     }
 
-    function generateCardData(roomStr, idStr) {
-        let seedFunc = xmur3(roomStr + "_" + idStr);
-        let rand = sfc32(seedFunc(), seedFunc(), seedFunc(), seedFunc());
-
-        let cols = [
-            getNRandom(1, 15, 5, rand),
-            getNRandom(16, 30, 5, rand),
-            getNRandom(31, 45, 5, rand),
-            getNRandom(46, 60, 5, rand),
-            getNRandom(61, 75, 5, rand)
-        ];
-        cols[2][2] = "LIVRE"; // O centro
-        return cols;
-    }
-
-    // ==========================================
-    // ESTADOS
-    // ==========================================
-    let mState = { room: "", ids: [], drawn: [] };
-    let jState = { room: "", id: "", cardData: [] };
+    // --- ESTADO E NAVEGAÇÃO ---
+    let state = {
+        mestre: { active: false, drawn: [], ids: [] },
+        player: { id: null, marked: [] }
+    };
 
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-' + id).classList.add('active');
+        document.getElementById(id).classList.add('active');
+        save();
     }
 
-    // Tentar manter tela acesa
-    async function lockScreen() {
-        try { if ('wakeLock' in navigator) await navigator.wakeLock.request('screen'); } 
-        catch (err) { console.log('WakeLock error:', err); }
+    function openMestreAuth() {
+        if (state.mestre.active) nav('scr-mestre-setup');
+        else nav('scr-mestre-login');
     }
 
-    // ==========================================
-    // FLUXO DO MESTRE
-    // ==========================================
-    function generateRoom() {
-        let room = document.getElementById('m-room').value.trim();
-        let qtd = parseInt(document.getElementById('m-qtd').value) || 10;
-        if(!room) return alert("Digite o código da sala!");
-        if(qtd > 30) qtd = 30;
-
-        // Gera IDs aleatórios e únicos de 3 dígitos
-        let idSet = new Set();
-        while(idSet.size < qtd) {
-            let num = Math.floor(Math.random() * 1000);
-            idSet.add(num.toString().padStart(3, '0'));
+    function checkMestrePass() {
+        let now = new Date();
+        let pass = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
+        let input = document.getElementById('mestre-pass').value.replace(':', '').padStart(4, '0');
+        
+        if (input === pass) {
+            state.mestre.active = true;
+            nav('scr-mestre-setup');
+        } else {
+            alert("Senha incorreta! (Dica: Olhe o relógio)");
         }
-        
-        mState.room = room;
-        mState.ids = Array.from(idSet);
-        mState.drawn = [];
-
-        // Mostra lista
-        const listDiv = document.getElementById('m-id-list');
-        listDiv.innerHTML = '';
-        mState.ids.forEach(id => { listDiv.innerHTML += `<div class="id-badge">${id}</div>`; });
-        document.getElementById('m-id-list-container').style.display = 'block';
     }
 
-    function startMestreGame() {
-        renderHistorico();
-        updateRanking();
-        document.getElementById('m-current-ball').innerText = "--";
-        document.getElementById('btn-draw').disabled = false;
-        nav('mestre-game');
-        lockScreen();
+    // --- MESTRE ---
+    function mestreGenerateIDs() {
+        let qtd = parseInt(document.getElementById('mestre-qtd').value) || 10;
+        state.mestre.ids = [];
+        while (state.mestre.ids.length < qtd) {
+            let id = Math.floor(Math.random() * 900) + 100;
+            if (!state.mestre.ids.includes(id)) state.mestre.ids.push(id);
+        }
+        document.getElementById('generated-ids-list').innerText = state.mestre.ids.join(' - ');
+        document.getElementById('mestre-id-display').style.display = 'block';
+        document.getElementById('btn-to-globo').style.display = 'block';
+        save();
     }
 
-    function drawNumber() {
-        if(mState.drawn.length >= 75) return alert("Todas as pedras já saíram!");
-        
-        let num;
-        do { num = Math.floor(Math.random() * 75) + 1; } while (mState.drawn.includes(num));
-        
-        mState.drawn.push(num);
-        document.getElementById('m-current-ball').innerText = num;
-        document.getElementById('m-drawn-count').innerText = mState.drawn.length;
-        
-        renderHistorico();
-        updateRanking();
+    function mestreDraw() {
+        if (state.mestre.drawn.length >= 75) return alert("Fim das pedras!");
+        let n;
+        do { n = Math.floor(Math.random() * 75) + 1; } while (state.mestre.drawn.includes(n));
+        state.mestre.drawn.push(n);
+        updateMasterUI();
+        save();
     }
 
-    function renderHistorico() {
-        const grid = document.getElementById('m-hist-grid');
-        grid.innerHTML = '';
+    function updateMasterUI() {
+        document.getElementById('current-ball').innerText = state.mestre.drawn[state.mestre.drawn.length-1] || '--';
+        
+        // Histórico
+        let histHtml = '';
         for(let i=1; i<=75; i++) {
-            let cl = mState.drawn.includes(i) ? 'hist-num drawn' : 'hist-num';
-            grid.innerHTML += `<div class="${cl}">${i}</div>`;
+            let on = state.mestre.drawn.includes(i) ? 'on' : '';
+            histHtml += `<div class="hist-ball ${on}">${i}</div>`;
         }
-    }
+        document.getElementById('master-hist').innerHTML = histHtml;
 
-    function updateRanking() {
-        let rankList = [];
-
-        // Calcula a situação de TODAS as cartelas criadas
-        mState.ids.forEach(id => {
-            let card = generateCardData(mState.room, id);
-            let markedCount = 0;
-            // Checa os 25 espaços
-            for(let c=0; c<5; c++) {
-                for(let r=0; r<5; r++) {
-                    if(c===2 && r===2) markedCount++; // LIVRE conta como marcado
-                    else if(mState.drawn.includes(card[c][r])) markedCount++;
+        // Ranking
+        let rank = [];
+        state.mestre.ids.forEach(id => {
+            let cardData = generateCard(id);
+            let missing = 0;
+            // Check full card
+            cardData.forEach((col, cIdx) => {
+                col.forEach((num, rIdx) => {
+                    if (cIdx === 2 && rIdx === 2) return; // FREE
+                    if (!state.mestre.drawn.includes(num)) missing++;
+                });
+            });
+            
+            // Check lines (Horizontal & Vertical)
+            let bestLine = 5;
+            for(let i=0; i<5; i++) {
+                let hMiss = 0, vMiss = 0;
+                for(let j=0; j<5; j++) {
+                    if (!state.mestre.drawn.includes(cardData[j][i]) && !(j===2 && i===2)) hMiss++;
+                    if (!state.mestre.drawn.includes(cardData[i][j]) && !(i===2 && j===2)) vMiss++;
                 }
+                bestLine = Math.min(bestLine, hMiss, vMiss);
             }
-            // Cartela cheia = 25
-            let faltam = 25 - markedCount;
-            rankList.push({ id: id, faltam: faltam });
+            rank.push({id, missing, bestLine});
         });
 
-        // Ordena por quem está mais perto de bater
-        rankList.sort((a,b) => a.faltam - b.faltam);
-
-        const listDiv = document.getElementById('m-ranking-list');
-        listDiv.innerHTML = '';
-
-        if(mState.drawn.length === 0) {
-            listDiv.innerHTML = '<p style="text-align:center; font-size:14px; color:#777;">Sorteie os números para ver quem está ganhando.</p>';
-            return;
-        }
-
-        // Mostra o top 5 (ou mais se tiver empate)
-        for(let i=0; i<Math.min(5, rankList.length); i++) {
-            let p = rankList[i];
-            let isAlert = p.faltam <= 3;
-            let classAlert = isAlert ? 'ranking-item alert' : 'ranking-item';
-            let emoji = "";
-            if(i===0) emoji = "🥇"; else if(i===1) emoji = "🥈"; else if(i===2) emoji = "🥉";
-            
-            let text = p.faltam === 0 ? "BATEU! (CONFIRME)" : `Faltam ${p.faltam}`;
-            if(p.faltam === 0) document.getElementById('btn-draw').disabled = true; // Trava se alguém bater
-
-            listDiv.innerHTML += `
-                <div class="${classAlert}">
-                    <span>${emoji} Cartela ${p.id}</span>
-                    <span>${text}</span>
-                </div>
-            `;
-        }
-    }
-
-    function resetMestre() {
-        if(confirm("Encerrar essa partida de vez?")) {
-            mState = { room: "", ids: [], drawn: [] };
-            document.getElementById('m-id-list-container').style.display = 'none';
-            nav('menu');
-        }
-    }
-
-    // ==========================================
-    // FLUXO DO JOGADOR
-    // ==========================================
-    function generateJogadorCard() {
-        let room = document.getElementById('j-room').value.trim();
-        let idStr = document.getElementById('j-id').value.trim();
+        rank.sort((a,b) => a.missing - b.missing);
         
-        if(!room || !idStr) return alert("Preencha Sala e ID!");
-
-        jState.room = room;
-        jState.id = idStr.padStart(3, '0');
-        jState.cardData = generateCardData(jState.room, jState.id);
-
-        document.getElementById('j-info-room').innerText = jState.room;
-        document.getElementById('j-info-id').innerText = jState.id;
-
-        renderCartela();
-        nav('jogador-game');
-        lockScreen();
+        let rankHtml = '';
+        rank.slice(0, 5).forEach(r => {
+            let status = r.missing === 0 ? "BINGO!!!" : (r.bestLine === 0 ? "LINHA!!!" : `Faltam ${r.missing}`);
+            let winCls = (r.missing === 0 || r.bestLine === 0) ? 'winner' : '';
+            rankHtml += `<div class="ranking-item ${winCls}"><span>Cartela ${r.id}</span><span>${status}</span></div>`;
+        });
+        document.getElementById('master-ranking').innerHTML = rankHtml;
     }
 
-    function renderCartela() {
-        const grid = document.getElementById('j-cartela-grid');
+    function mestreReset() {
+        if(confirm("Zerar o globo e começar do zero?")) {
+            state.mestre.drawn = [];
+            updateMasterUI();
+            save();
+        }
+    }
+
+    // --- JOGADOR ---
+    function playerStart() {
+        let id = document.getElementById('player-id-input').value;
+        if (id.length < 3) return alert("ID inválido.");
+        state.player.id = id;
+        state.player.marked = [];
+        renderPlayerCard();
+        nav('scr-player-game');
+    }
+
+    function renderPlayerCard() {
+        document.getElementById('display-id').innerText = state.player.id;
+        let card = generateCard(state.player.id);
+        let grid = document.getElementById('player-grid');
         grid.innerHTML = '';
-        
-        // A matriz de dados está em Colunas (B, I, N, G, O). Precisamos renderizar Linha por Linha no CSS Grid.
-        for(let row=0; row<5; row++) {
-            for(let col=0; col<5; col++) {
-                let val = jState.cardData[col][row];
-                let isLivre = (col === 2 && row === 2);
+
+        for (let r = 0; r < 5; r++) {
+            for (let c = 0; c < 5; c++) {
                 let div = document.createElement('div');
-                div.className = isLivre ? 'cell livre marked' : 'cell';
-                div.innerText = val;
-                
-                if(!isLivre) {
-                    div.onclick = function() { this.classList.toggle('marked'); };
+                let val = card[c][r];
+                div.className = 'cell';
+                if (c === 2 && r === 2) {
+                    div.innerText = 'LIVRE';
+                    div.classList.add('free', 'marked');
+                } else {
+                    div.innerText = val;
+                    if (state.player.marked.includes(val)) div.classList.add('marked');
+                    div.onclick = () => toggleCell(div, val);
                 }
                 grid.appendChild(div);
             }
         }
+        checkPlayerWinLocally();
     }
 
-    function screamBingo() {
-        document.getElementById('popup-bingo').classList.add('active');
+    function toggleCell(el, val) {
+        if (el.classList.contains('marked')) {
+            if (confirm("Tem certeza que quer remover o milho?")) {
+                el.classList.remove('marked');
+                state.player.marked = state.player.marked.filter(m => m !== val);
+            }
+        } else {
+            el.classList.add('marked');
+            state.player.marked.push(val);
+        }
+        save();
+        checkPlayerWinLocally();
     }
 
-    function closePopup() {
-        document.getElementById('popup-bingo').classList.remove('active');
+    function checkPlayerWinLocally() {
+        // Apenas para aviso visual no topo
+        let count = state.player.marked.length;
+        document.getElementById('display-win-status').innerText = count >= 24 ? "CARTELA CHEIA!" : "";
     }
 
+    function shoutBingo() {
+        document.getElementById('overlay-id').innerText = "ID: " + state.player.id;
+        document.getElementById('bingo-overlay').style.display = 'flex';
+    }
+
+    function closeBingo() { document.getElementById('bingo-overlay').style.display = 'none'; }
+
+    function playerExit() {
+        if(confirm("Sair da cartela? Seus milhos serão salvos.")) nav('scr-menu');
+    }
+
+    // --- LOCAL STORAGE ---
+    function save() { localStorage.setItem('bingo_asilo_v1', JSON.stringify(state)); }
+    function load() {
+        let saved = localStorage.getItem('bingo_asilo_v1');
+        if (saved) {
+            state = JSON.parse(saved);
+            if (state.player.id) renderPlayerCard();
+            if (state.mestre.active) updateMasterUI();
+        }
+    }
+
+    window.onload = load;
 </script>
 </body>
 </html>
