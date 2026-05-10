@@ -3,199 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bingo do Asilo - Festa 19 & 20</title>
+    <title>Bingo de Elite - Mestre Supremo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --vintage-paper: #e8d5b5;
-            --ink: #2c1a1a;
             --gold: #d4af37;
-            --red-stamp: #a32a2a;
-            --wood: #3e2723;
+            --gold-dark: #aa8a2e;
+            --velvet: #2c3e50;
+            --paper: #f3e5ab;
+            --ink: #1a1a1a;
+            --wine: #722f37;
             --corn: #fbc02d;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Georgia', serif; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        h1, h2, h3, .bingo-header { font-family: 'Playfair Display', serif; }
+
         body { 
-            background: var(--wood); 
+            background: #0f172a; 
             color: var(--ink);
             display: flex; justify-content: center; min-height: 100vh;
+            overflow: hidden;
         }
 
         #app {
-            width: 100%; max-width: 500px; min-height: 100vh;
-            background: var(--vintage-paper);
-            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            width: 100%; max-width: 500px; height: 100vh;
+            background: var(--paper);
+            background-image: url('https://www.transparenttextures.com/patterns/shattered-island.png');
+            box-shadow: 0 0 100px rgba(0,0,0,1);
             position: relative; display: flex; flex-direction: column;
-            border-left: 8px solid var(--wood); border-right: 8px solid var(--wood);
+            border: 8px solid var(--gold);
+            border-image: linear-gradient(to bottom, var(--gold), var(--gold-dark)) 1;
         }
 
-        .screen { display: none; flex-direction: column; padding: 20px; height: 100vh; overflow-y: auto; }
-        .screen.active { display: flex; }
+        .screen { display: none; flex-direction: column; padding: 20px; height: 100%; overflow-y: auto; position: relative; }
+        .screen.active { display: flex; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        h1, h2 { text-transform: uppercase; text-align: center; color: var(--red-stamp); letter-spacing: 2px; }
-        .decoration { border: 2px solid var(--ink); padding: 10px; margin-bottom: 20px; position: relative; }
-        .decoration::after { content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; border: 1px solid var(--ink); }
+        /* HEADER & DECORATION */
+        .art-deco {
+            border: 3px double var(--gold-dark);
+            padding: 15px; margin-bottom: 20px;
+            text-align: center; background: rgba(0,0,0,0.03);
+            position: relative;
+        }
+        h1 { font-size: 28px; color: var(--wine); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* INPUTS E BOTÕES VINTAGE */
-        input { 
-            width: 100%; padding: 15px; margin-bottom: 15px; border: 2px solid var(--ink); 
-            background: rgba(255,255,255,0.3); font-size: 20px; font-weight: bold; text-align: center;
+        /* BUTTONS */
+        button {
+            width: 100%; padding: 16px; margin-bottom: 12px;
+            background: linear-gradient(to bottom, var(--velvet), #1a252f);
+            color: var(--gold); border: 2px solid var(--gold);
+            font-size: 15px; font-weight: bold; text-transform: uppercase;
+            cursor: pointer; transition: all 0.1s;
+            box-shadow: 0 5px 0 #15202b, 0 8px 15px rgba(0,0,0,0.3);
         }
-        button { 
-            width: 100%; padding: 15px; border: 2px solid var(--ink); background: var(--red-stamp);
-            color: white; font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;
-            box-shadow: 4px 4px 0 var(--ink); margin-bottom: 12px;
-        }
-        button:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
-        .btn-secondary { background: var(--ink); }
-        .btn-rules { background: #5d4037; }
+        button:active { transform: translateY(3px); box-shadow: 0 2px 0 #15202b; }
+        .btn-gold { background: var(--gold); color: var(--velvet); border-color: var(--velvet); box-shadow: 0 5px 0 var(--gold-dark); }
+        .btn-close { background: var(--wine); color: white; border: none; padding: 10px; margin-top: 10px; }
 
-        /* CARTELA */
-        .bingo-grid { 
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; 
-            background: var(--ink); padding: 5px; border-radius: 4px;
+        input {
+            width: 100%; padding: 15px; margin-bottom: 15px;
+            border: 2px solid var(--gold-dark); background: rgba(255,255,255,0.7);
+            font-size: 20px; text-align: center; color: var(--ink); font-weight: bold;
         }
-        .bingo-header { 
-            display: grid; grid-template-columns: repeat(5, 1fr); 
-            text-align: center; font-size: 30px; font-weight: 900; color: var(--red-stamp);
+
+        /* GLOBO & BALLS */
+        .globo-wrap {
+            width: 110px; height: 110px; margin: 0 auto 15px;
+            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(10px);
+            border-radius: 50%; border: 4px solid var(--gold);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 50px; font-weight: bold; color: var(--wine);
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.5), 0 5px 15px rgba(0,0,0,0.3);
         }
-        .cell { 
-            background: #fff; aspect-ratio: 1/1; display: flex; justify-content: center; 
-            align-items: center; font-size: 22px; font-weight: bold; position: relative;
+
+        /* BINGO GRID */
+        .bingo-card-container { background: rgba(0,0,0,0.08); padding: 8px; border-radius: 4px; }
+        .bingo-header { display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; font-size: 24px; font-weight: 900; color: var(--wine); }
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 8px; }
+        .cell {
+            background: #fff; aspect-ratio: 1/1; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; font-weight: bold; border-radius: 2px; position: relative; cursor: pointer;
         }
         .cell.marked::after {
-            content: ''; position: absolute; width: 70%; height: 70%;
-            background: radial-gradient(circle at 30% 30%, #fff59d, var(--corn) 60%, #f57f17);
-            border-radius: 50% 50% 40% 40%; transform: rotate(-15deg);
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.4); z-index: 2;
+            content: ''; position: absolute; width: 75%; height: 75%;
+            background: radial-gradient(circle at 30% 30%, #ffd54f, var(--corn) 60%, #f57f17);
+            border-radius: 50% 50% 45% 45%; transform: rotate(-10deg);
+            box-shadow: 1px 2px 4px rgba(0,0,0,0.4); z-index: 5;
         }
-        .cell.free { font-size: 10px; color: var(--red-stamp); background: #fdf5e6; }
+        .cell.free { background: var(--paper); color: var(--wine); font-size: 10px; }
 
-        /* MESTRE */
-        .globo { 
-            width: 100px; height: 100px; background: var(--red-stamp); border-radius: 50%;
-            margin: 0 auto 20px; display: flex; justify-content: center; align-items: center;
-            font-size: 45px; color: white; border: 5px double var(--gold);
+        /* RANKING */
+        .ranking-list { margin-top: 10px; }
+        .ranking-item { 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px; margin-bottom: 5px; background: rgba(255,255,255,0.4);
+            border: 1px solid var(--gold-dark); border-radius: 4px; cursor: pointer;
         }
-        .ranking-box { background: rgba(0,0,0,0.05); padding: 10px; border: 1px dashed var(--ink); margin-top: 15px; }
-        .ranking-item { display: flex; justify-content: space-between; border-bottom: 1px solid #ccc; padding: 5px 0; font-size: 14px; }
-        .ranking-item.winner { background: #fff59d; font-weight: bold; color: var(--red-stamp); border: 1px solid var(--red-stamp); padding: 5px; }
+        .ranking-item:active { background: var(--gold); }
+        .ranking-item.alert { background: #fff59d; animation: pulse 1s infinite alternate; }
+        .badge-missing { background: var(--wine); color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; }
 
-        /* POPUP BINGO */
-        #bingo-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(163, 42, 42, 0.95); z-index: 1000; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center;
+        /* AUDITOR MODAL */
+        #auditor-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 20000;
+            display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px;
         }
-        .strobe { animation: strobe 0.4s infinite; }
-        @keyframes strobe { from { opacity: 1; } to { opacity: 0.7; } }
+        .auditor-content { background: var(--paper); padding: 20px; border: 4px solid var(--gold); width: 100%; max-width: 400px; position: relative; }
 
-        .hist-grid { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; justify-content: center; }
-        .hist-ball { width: 25px; height: 25px; border-radius: 50%; background: #ccc; font-size: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; }
-        .hist-ball.on { background: var(--red-stamp); color: white; }
+        /* FLASHES */
+        .subliminar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 99999; display: none; background: white; justify-content: center; align-items: center; }
+        .subliminar img { width: 80%; max-height: 80%; object-fit: contain; }
 
-        .rules-content { font-size: 16px; line-height: 1.5; text-align: justify; }
-        .rules-content li { margin-bottom: 10px; }
+        #bingo-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wine); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; color: var(--gold); text-align: center; animation: flash-bg 0.2s infinite; }
+        @keyframes flash-bg { 0% { background: var(--wine); } 100% { background: var(--gold); color: var(--wine); } }
+        @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
+
+        .hist-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 15px; justify-content: center; }
+        .hist-ball { width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.1); font-size: 9px; display: flex; justify-content: center; align-items: center; font-weight: bold; border: 1px solid rgba(0,0,0,0.1); }
+        .hist-ball.on { background: var(--wine); color: white; border-color: var(--gold); }
     </style>
 </head>
 <body>
 
-<div id="app">
-    <div id="scr-menu" class="screen active">
-        <div class="decoration" style="margin-top: 50px;">
-            <h1>BINGO<br><span style="font-size: 18px; color: var(--ink)">DO ASILO</span></h1>
+<div id="flash-jequiti" class="subliminar"><img src="https://upload.wikimedia.org/wikipedia/pt/d/d3/Jequiti_Logo.png"></div>
+<div id="flash-telesena" class="subliminar"><img src="https://upload.wikimedia.org/wikipedia/pt/e/eb/Tele_Sena_Logo.png"></div>
+
+<div id="auditor-modal">
+    <div class="auditor-content">
+        <h2 style="text-align: center; color: var(--wine); margin-bottom: 10px;">Auditando: <span id="audit-id-title"></span></h2>
+        <p style="font-size: 12px; text-align: center; margin-bottom: 10px;">Números em dourado são os que já saíram no globo.</p>
+        <div class="bingo-card-container">
+            <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
+            <div class="grid" id="audit-grid"></div>
         </div>
-        <p style="text-align: center; margin-bottom: 30px;">Festa 19 & 20 - Edição Limitada</p>
-        
+        <button class="btn-close" onclick="closeAuditor()">Fechar Auditoria</button>
+    </div>
+</div>
+
+<div id="app">
+    
+    <div id="scr-menu" class="screen active">
+        <div class="art-deco" style="margin-top: 60px;">
+            <h1>BINGO DE LUXO</h1>
+            <h2 style="font-family: serif; font-style: italic;">Asilo 1920</h2>
+        </div>
         <button onclick="openMestreAuth()">Aba do Mestre</button>
-        <button class="btn-secondary" onclick="nav('scr-player-login')">Minha Cartela</button>
-        <button class="btn-rules" onclick="nav('scr-rules')">Regras do Jogo</button>
+        <button class="btn-gold" onclick="nav('scr-player-login')">Minha Cartela</button>
+        <button style="background:none; border:none; color:var(--ink); text-decoration:underline; font-size:12px; box-shadow:none; margin-top:20px;" onclick="nav('scr-rules')">Ver Regras</button>
     </div>
 
     <div id="scr-rules" class="screen">
-        <h1>Regras</h1>
-        <div class="rules-content">
-            <ul>
-                <li><strong>1. Início:</strong> O Mestre gera os IDs e distribui para os convidados. Cada ID gera uma cartela única e fixa.</li>
-                <li><strong>2. Marcação:</strong> Toque no número para colocar um grão de milho. Para remover, toque novamente e confirme.</li>
-                <li><strong>3. Linha:</strong> Se completar uma linha horizontal, vertical ou diagonal (5 números), você bateu <strong>LINHA</strong>. Grite para ganhar o prêmio de consolação!</li>
-                <li><strong>4. Bingo:</strong> Se completar a <strong>CARTELA TODA</strong> (24 números + livre), grite <strong>BINGO</strong> e mostre o celular piscando para o Mestre.</li>
-                <li><strong>5. Fraude:</strong> O Mestre tem um radar de todas as cartelas. Se gritar falso, a punição é um shot de bebida barata.</li>
-            </ul>
+        <div class="art-deco"><h1>Regras do Cassino</h1></div>
+        <div style="font-size: 15px; line-height: 1.6; text-align: justify; padding: 10px; background: rgba(255,255,255,0.3);">
+            <p><strong>1.</strong> O Mestre distribui IDs fixos. Sua cartela nunca muda.</p><br>
+            <p><strong>2.</strong> Marque o milho tocando no número. Confirme para retirar.</p><br>
+            <p><strong>3.</strong> O prêmio principal é <strong>CARTELA CHEIA</strong>.</p><br>
+            <p><strong>4.</strong> O Mestre monitora todas as cartelas em tempo real. Não tente fraudar!</p>
         </div>
-        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
+        <button onclick="nav('scr-menu')" style="margin-top: 20px;">Voltar</button>
     </div>
 
     <div id="scr-mestre-login" class="screen">
-        <h1>Acesso Mestre</h1>
-        <p style="text-align: center; margin-bottom: 15px;">Digite o horário atual para entrar:</p>
-        <input type="number" id="mestre-pass" placeholder="Ex: 0042">
-        <button onclick="checkMestrePass()">Entrar no Globo</button>
-        <button class="btn-secondary" onclick="nav('scr-menu')">Cancelar</button>
+        <div class="art-deco"><h1>Dono do Globo</h1></div>
+        <p style="text-align: center; margin-bottom: 10px;">Senha: Horário atual (HHMM)</p>
+        <input type="number" id="mestre-pass" placeholder="Ex: 0055">
+        <button onclick="checkMestrePass()">Validar Acesso</button>
+        <button onclick="nav('scr-menu')">Voltar</button>
     </div>
 
     <div id="scr-mestre-setup" class="screen">
-        <h1>Configurar Rodada</h1>
-        <div class="ranking-box">
-            <p>Qtd. de Jogadores:</p>
-            <input type="number" id="mestre-qtd" value="10" min="1" max="30">
+        <div class="art-deco"><h1>Nova Rodada</h1></div>
+        <p style="text-align: center;">Quantas pessoas vão jogar?</p>
+        <input type="number" id="mestre-qtd" value="10">
+        <button onclick="mestreGenerateIDs()">Gerar Novos IDs</button>
+        <div id="mestre-id-display" style="display:none; background:rgba(0,0,0,0.05); padding:15px; border:1px dashed var(--gold); margin-top:10px;">
+            <p style="font-size:12px; font-weight:bold;">IDs PARA DISTRIBUIR:</p>
+            <h3 id="generated-ids-list" style="word-break:break-all; color:var(--wine); letter-spacing:1px; margin-top:5px;"></h3>
         </div>
-        <button onclick="mestreGenerateIDs()">Gerar IDs da Rodada</button>
-        <div id="mestre-id-display" class="ranking-box" style="display: none; word-break: break-all;">
-            <p>IDs gerados (Diga aos jogadores):</p>
-            <h3 id="generated-ids-list" style="color: var(--wood); margin-top: 10px;"></h3>
-        </div>
-        <button id="btn-to-globo" style="display: none;" onclick="nav('scr-mestre-globo')">Ir para o Globo</button>
-        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
+        <button id="btn-to-globo" style="display:none; margin-top:20px;" class="btn-gold" onclick="nav('scr-mestre-globo')">Abrir o Globo</button>
     </div>
 
     <div id="scr-mestre-globo" class="screen">
-        <div class="globo" id="current-ball">--</div>
-        <button onclick="mestreDraw()">Sortear Próxima</button>
+        <div class="globo-wrap" id="current-ball">--</div>
+        <button onclick="mestreDraw()" id="draw-btn">Sortear Bola</button>
         
         <div class="ranking-box">
-            <p>Monitor Anti-Fraude:</p>
-            <div id="master-ranking"></div>
+            <p style="font-size: 11px; font-weight: bold; text-align: center; color: var(--wine);">TOQUE NO ID PARA AUDITAR A CARTELA</p>
+            <div id="master-ranking" class="ranking-list"></div>
         </div>
 
         <div class="hist-grid" id="master-hist"></div>
-        <button class="btn-secondary" style="margin-top: 20px;" onclick="mestreReset()">Zerar Partida</button>
+        <button class="btn-gold" style="margin-top:20px; font-size:11px; padding:8px; opacity:0.7;" onclick="mestreReset()">Zerar Partida</button>
     </div>
 
     <div id="scr-player-login" class="screen">
-        <h1>Sua Cartela</h1>
-        <p style="text-align: center; margin-bottom: 10px;">Digite o ID fornecido pelo Mestre:</p>
-        <input type="number" id="player-id-input" placeholder="Ex: 482">
-        <button onclick="playerStart()">Entrar no Jogo</button>
-        <button class="btn-secondary" onclick="nav('scr-menu')">Voltar</button>
+        <div class="art-deco"><h1>Sua Cartela</h1></div>
+        <input type="number" id="player-id-input" placeholder="Digite seu ID">
+        <button class="btn-gold" onclick="playerStart()">Entrar no Jogo</button>
+        <button onclick="nav('scr-menu')">Voltar</button>
     </div>
 
     <div id="scr-player-game" class="screen">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; color: var(--wine); margin-bottom: 10px; font-size: 14px;">
             <span>ID: <span id="display-id">---</span></span>
-            <span id="display-win-status" style="color: var(--red-stamp)"></span>
+            <span id="display-status"></span>
         </div>
         
-        <div class="bingo-header">
-            <div>B</div><div>I</div><div>N</div><div>G</div><div>O</div>
+        <div class="bingo-card-container">
+            <div class="bingo-header"><div>B</div><div>I</div><div>N</div><div>G</div><div>O</div></div>
+            <div class="grid" id="player-grid"></div>
         </div>
-        <div class="bingo-grid" id="player-grid"></div>
         
-        <button id="btn-shout-bingo" class="btn-secondary" style="margin-top: 25px; background: var(--red-stamp);" onclick="shoutBingo()">BINGO!</button>
-        <button class="btn-secondary" style="margin-top: 5px; opacity: 0.6; font-size: 12px;" onclick="playerExit()">Sair da Cartela</button>
+        <button class="btn-gold" style="margin-top: 30px; background: var(--wine); color: white;" onclick="shoutBingo()">GRITAR BINGO!</button>
+        <button style="background:none; border:none; box-shadow:none; color:var(--ink); font-size:10px; text-decoration:underline;" onclick="nav('scr-menu')">Voltar ao Menu</button>
     </div>
+
 </div>
 
-<div id="bingo-overlay" class="strobe">
-    <h1 style="color: white; font-size: 80px; transform: rotate(-5deg);">BINGO!</h1>
-    <h2 id="overlay-id" style="color: var(--gold); font-size: 30px;">ID: ---</h2>
-    <p style="color: white; margin: 30px;">Mostre para o Mestre agora!</p>
-    <button style="width: 200px; background: white; color: var(--red-stamp);" onclick="closeBingo()">Continuar</button>
+<div id="bingo-overlay">
+    <h1 style="font-size: 70px;">BINGO!</h1>
+    <h3 id="overlay-id" style="font-size: 24px;">ID: ---</h3>
+    <p style="margin-top: 20px; font-weight: bold;">MOSTRE O CELULAR PRO MESTRE!</p>
+    <button style="width: 180px; margin-top: 30px; background: white; color: var(--wine); border:none;" onclick="closeBingo()">Fechar</button>
 </div>
 
 <script>
-    // --- LÓGICA DE CARTELA FIXA (SEED) ---
+    // --- LÓGICA DE GERAÇÃO (SEED) ---
     function seededRandom(seed) {
         var x = Math.sin(seed++) * 10000;
         return x - Math.floor(x);
@@ -208,9 +244,7 @@
             let min = (i * 15) + 1;
             let max = min + 14;
             let pool = [];
-            for (let n = min; min <= max; min++) pool.push(min);
-            
-            // Shuffle pool using ID as seed
+            for (let n = min; n <= max; n++) pool.push(n);
             for (let j = 0; pool.length > 0 && j < 5; j++) {
                 let rIndex = Math.floor(seededRandom(idInt + i + j) * pool.length);
                 card[i].push(pool.splice(rIndex, 1)[0]);
@@ -219,11 +253,21 @@
         return card;
     }
 
-    // --- ESTADO E NAVEGAÇÃO ---
+    // --- ESTADO ---
     let state = {
         mestre: { active: false, drawn: [], ids: [] },
         player: { id: null, marked: [] }
     };
+
+    function save() { localStorage.setItem('bingo_v8_save', JSON.stringify(state)); }
+    function load() {
+        let saved = localStorage.getItem('bingo_v8_save');
+        if (saved) {
+            state = JSON.parse(saved);
+            if (state.player.id) renderPlayerCard();
+            if (state.mestre.active) updateMasterUI();
+        }
+    }
 
     function nav(id) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -231,6 +275,7 @@
         save();
     }
 
+    // --- MESTRE LOGIN ---
     function openMestreAuth() {
         if (state.mestre.active) nav('scr-mestre-setup');
         else nav('scr-mestre-login');
@@ -239,23 +284,20 @@
     function checkMestrePass() {
         let now = new Date();
         let pass = now.getHours().toString().padStart(2, '0') + now.getMinutes().toString().padStart(2, '0');
-        let input = document.getElementById('mestre-pass').value.replace(':', '').padStart(4, '0');
-        
+        let input = document.getElementById('mestre-pass').value.padStart(4, '0');
         if (input === pass) {
             state.mestre.active = true;
             nav('scr-mestre-setup');
-        } else {
-            alert("Senha incorreta! (Dica: Olhe o relógio)");
-        }
+        } else { alert("ACESSO NEGADO. Olhe o relógio!"); }
     }
 
-    // --- MESTRE ---
+    // --- MESTRE LOGIC ---
     function mestreGenerateIDs() {
         let qtd = parseInt(document.getElementById('mestre-qtd').value) || 10;
         state.mestre.ids = [];
-        while (state.mestre.ids.length < qtd) {
+        while(state.mestre.ids.length < qtd) {
             let id = Math.floor(Math.random() * 900) + 100;
-            if (!state.mestre.ids.includes(id)) state.mestre.ids.push(id);
+            if(!state.mestre.ids.includes(id)) state.mestre.ids.push(id);
         }
         document.getElementById('generated-ids-list').innerText = state.mestre.ids.join(' - ');
         document.getElementById('mestre-id-display').style.display = 'block';
@@ -264,7 +306,7 @@
     }
 
     function mestreDraw() {
-        if (state.mestre.drawn.length >= 75) return alert("Fim das pedras!");
+        if (state.mestre.drawn.length >= 75) return;
         let n;
         do { n = Math.floor(Math.random() * 75) + 1; } while (state.mestre.drawn.includes(n));
         state.mestre.drawn.push(n);
@@ -275,7 +317,6 @@
     function updateMasterUI() {
         document.getElementById('current-ball').innerText = state.mestre.drawn[state.mestre.drawn.length-1] || '--';
         
-        // Histórico
         let histHtml = '';
         for(let i=1; i<=75; i++) {
             let on = state.mestre.drawn.includes(i) ? 'on' : '';
@@ -283,55 +324,66 @@
         }
         document.getElementById('master-hist').innerHTML = histHtml;
 
-        // Ranking
         let rank = [];
         state.mestre.ids.forEach(id => {
-            let cardData = generateCard(id);
+            let card = generateCard(id);
             let missing = 0;
-            // Check full card
-            cardData.forEach((col, cIdx) => {
-                col.forEach((num, rIdx) => {
-                    if (cIdx === 2 && rIdx === 2) return; // FREE
-                    if (!state.mestre.drawn.includes(num)) missing++;
-                });
-            });
-            
-            // Check lines (Horizontal & Vertical)
-            let bestLine = 5;
-            for(let i=0; i<5; i++) {
-                let hMiss = 0, vMiss = 0;
-                for(let j=0; j<5; j++) {
-                    if (!state.mestre.drawn.includes(cardData[j][i]) && !(j===2 && i===2)) hMiss++;
-                    if (!state.mestre.drawn.includes(cardData[i][j]) && !(i===2 && j===2)) vMiss++;
-                }
-                bestLine = Math.min(bestLine, hMiss, vMiss);
-            }
-            rank.push({id, missing, bestLine});
+            card.forEach((col, c) => col.forEach((num, r) => {
+                if(c===2 && r===2) return;
+                if(!state.mestre.drawn.includes(num)) missing++;
+            }));
+            rank.push({id, missing});
         });
 
         rank.sort((a,b) => a.missing - b.missing);
-        
-        let rankHtml = '';
-        rank.slice(0, 5).forEach(r => {
-            let status = r.missing === 0 ? "BINGO!!!" : (r.bestLine === 0 ? "LINHA!!!" : `Faltam ${r.missing}`);
-            let winCls = (r.missing === 0 || r.bestLine === 0) ? 'winner' : '';
-            rankHtml += `<div class="ranking-item ${winCls}"><span>Cartela ${r.id}</span><span>${status}</span></div>`;
+        let html = '';
+        rank.slice(0, 8).forEach(r => {
+            let alertCls = r.missing <= 2 ? 'alert' : '';
+            let status = r.missing === 0 ? "BINGO!" : `Faltam ${r.missing}`;
+            html += `
+                <div class="ranking-item ${alertCls}" onclick="openAuditor(${r.id})">
+                    <span>Cartela <strong>${r.id}</strong></span>
+                    <span class="badge-missing">${status}</span>
+                </div>`;
         });
-        document.getElementById('master-ranking').innerHTML = rankHtml;
+        document.getElementById('master-ranking').innerHTML = html;
     }
 
-    function mestreReset() {
-        if(confirm("Zerar o globo e começar do zero?")) {
-            state.mestre.drawn = [];
-            updateMasterUI();
-            save();
+    // --- VISÃO DE AUDITORIA (NOVA FEATURE) ---
+    function openAuditor(id) {
+        document.getElementById('audit-id-title').innerText = id;
+        let card = generateCard(id);
+        let grid = document.getElementById('audit-grid');
+        grid.innerHTML = '';
+
+        for(let r=0; r<5; r++){
+            for(let c=0; c<5; c++){
+                let div = document.createElement('div');
+                div.className = 'cell';
+                let val = card[c][r];
+                if(c===2 && r===2) { 
+                    div.innerText = 'FREE'; div.classList.add('free', 'marked'); 
+                } else {
+                    div.innerText = val;
+                    // Se o número está no array de drawn do mestre, marca com milho oficial
+                    if(state.mestre.drawn.includes(val)) div.classList.add('marked');
+                }
+                grid.appendChild(div);
+            }
         }
+        document.getElementById('auditor-modal').style.display = 'flex';
     }
 
-    // --- JOGADOR ---
+    function closeAuditor() {
+        document.getElementById('auditor-modal').style.display = 'none';
+    }
+
+    function mestreReset() { if(confirm("Deseja zerar o globo?")) { state.mestre.drawn = []; updateMasterUI(); save(); } }
+
+    // --- JOGADOR LOGIC ---
     function playerStart() {
         let id = document.getElementById('player-id-input').value;
-        if (id.length < 3) return alert("ID inválido.");
+        if(id.length < 3) return alert("ID inválido");
         state.player.id = id;
         state.player.marked = [];
         renderPlayerCard();
@@ -343,29 +395,25 @@
         let card = generateCard(state.player.id);
         let grid = document.getElementById('player-grid');
         grid.innerHTML = '';
-
-        for (let r = 0; r < 5; r++) {
-            for (let c = 0; c < 5; c++) {
+        for(let r=0; r<5; r++){
+            for(let c=0; c<5; c++){
                 let div = document.createElement('div');
-                let val = card[c][r];
                 div.className = 'cell';
-                if (c === 2 && r === 2) {
-                    div.innerText = 'LIVRE';
-                    div.classList.add('free', 'marked');
-                } else {
+                let val = card[c][r];
+                if(c===2 && r===2) { div.innerText = 'FREE'; div.classList.add('free', 'marked'); }
+                else {
                     div.innerText = val;
-                    if (state.player.marked.includes(val)) div.classList.add('marked');
+                    if(state.player.marked.includes(val)) div.classList.add('marked');
                     div.onclick = () => toggleCell(div, val);
                 }
                 grid.appendChild(div);
             }
         }
-        checkPlayerWinLocally();
     }
 
     function toggleCell(el, val) {
-        if (el.classList.contains('marked')) {
-            if (confirm("Tem certeza que quer remover o milho?")) {
+        if(el.classList.contains('marked')) {
+            if(confirm("Deseja remover o milho deste número?")) {
                 el.classList.remove('marked');
                 state.player.marked = state.player.marked.filter(m => m !== val);
             }
@@ -374,38 +422,31 @@
             state.player.marked.push(val);
         }
         save();
-        checkPlayerWinLocally();
-    }
-
-    function checkPlayerWinLocally() {
-        // Apenas para aviso visual no topo
-        let count = state.player.marked.length;
-        document.getElementById('display-win-status').innerText = count >= 24 ? "CARTELA CHEIA!" : "";
     }
 
     function shoutBingo() {
         document.getElementById('overlay-id').innerText = "ID: " + state.player.id;
         document.getElementById('bingo-overlay').style.display = 'flex';
     }
-
     function closeBingo() { document.getElementById('bingo-overlay').style.display = 'none'; }
 
-    function playerExit() {
-        if(confirm("Sair da cartela? Seus milhos serão salvos.")) nav('scr-menu');
+    // --- FLASHES JEQUITI ---
+    function startFlashes() {
+        setTimeout(triggerFlash, 60000); // 1 minuto
     }
 
-    // --- LOCAL STORAGE ---
-    function save() { localStorage.setItem('bingo_asilo_v1', JSON.stringify(state)); }
-    function load() {
-        let saved = localStorage.getItem('bingo_asilo_v1');
-        if (saved) {
-            state = JSON.parse(saved);
-            if (state.player.id) renderPlayerCard();
-            if (state.mestre.active) updateMasterUI();
-        }
+    function triggerFlash() {
+        const type = Math.random() > 0.5 ? 'flash-jequiti' : 'flash-telesena';
+        const el = document.getElementById(type);
+        el.style.display = 'flex';
+        setTimeout(() => {
+            el.style.display = 'none';
+            let next = Math.floor(Math.random() * (600000 - 60000) + 60000); // 1-10 min
+            setTimeout(triggerFlash, next);
+        }, 150);
     }
 
-    window.onload = load;
+    window.onload = () => { load(); startFlashes(); };
 </script>
 </body>
 </html>
